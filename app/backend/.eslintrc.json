@@ -144,5 +144,14 @@
     "sonarjs/no-inverted-boolean-check": [
       "error"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files":["src/database/migrations/*.js"],
+      "rules": {
+        "max-lines-per-function": "off",
+        "strict":"off"
+      }
+    }
+  ]
 }
