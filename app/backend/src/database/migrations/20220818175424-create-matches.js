@@ -15,7 +15,6 @@ module.exports = {
         references: {
           model: {
             tableName: 'teams',
-            schema: 'schema',
           },
           key: 'id',
         },
@@ -32,7 +31,6 @@ module.exports = {
         references: {
           model: {
             tableName: 'teams',
-            schema: 'schema',
           },
           key: 'id',
         },
