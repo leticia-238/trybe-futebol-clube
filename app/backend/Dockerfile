@@ -1,6 +1,6 @@
-FROM node:16.14-alpine
+FROM node:16.15-alpine
 WORKDIR /app-backend
-COPY ["package.json", "package-lock.json", "./"]
+COPY ["package.json", "package-lock.json", "packages.npm", "./"]
 RUN npm install
 COPY . .
 EXPOSE 3001
