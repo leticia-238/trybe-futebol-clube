@@ -1,4 +1,6 @@
+import 'express-async-errors';
 import * as express from 'express';
+import errorHandler from './middlewares/errorHandler';
 import loginRouter from './routes/loginRouter';
 
 class App {
@@ -9,6 +11,8 @@ class App {
 
     this.config();
     this.initializeRoutes();
+
+    this.app.use(errorHandler);
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
