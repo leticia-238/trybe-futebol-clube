@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
+import { RoleType } from '../../interfaces/User';
 import db from '.';
-
-type RoleType = 'admin' | 'user';
 
 class User extends Model {
   declare id: number;
