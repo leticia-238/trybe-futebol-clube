@@ -5,6 +5,7 @@ import * as chai from "chai";
 import chaiHttp = require("chai-http");
 import User from "../database/models/User";
 import { app } from "../app";
+import AuthService from "../services/AuthService";
 
 chai.use(chaiHttp);
 
@@ -13,7 +14,7 @@ const mockLogin = {
   password: "string",
 };
 
-const mockToken = "token";
+const mockToken = "token123456";
 const mockErrorMessage = "message";
 
 type BodyKeys = "token" | "message";
@@ -41,7 +42,7 @@ describe("Teste Login", () => {
     });
 
     it("deve retornar um token", async () => {
-      // sinon.stub(Auth, "generateToken").returns(mockToken);
+      sinon.stub(AuthService, 'generateToken').returns(mockToken);
       expect(chaiHttpResponse.body).to.equal({ token: mockToken });
     });
   });
