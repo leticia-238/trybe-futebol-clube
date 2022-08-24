@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
-import UserService from '../services/UserService';
+import validateSigninPayload from '../services/validations';
+import { IUserService } from '../interfaces/Service';
 import AuthService from '../services/AuthService';
 
 class UserController {
-  static async signin(req: Request, res: Response) {
+  constructor(private service: IUserService) {}
+
+  async signin(req: Request, res: Response): Promise<void> {
     const payload = req.body;
-    await UserService.validateSigninPayload(payload);
-    await UserService.findOne(payload);
+    validateSigninPayload(payload);
+    const { email, password } = payload;
+    await this.service.validateRegisteredUser(email, password);
     const token = AuthService.generateToken(payload);
     res.status(200).json({ token });
   }

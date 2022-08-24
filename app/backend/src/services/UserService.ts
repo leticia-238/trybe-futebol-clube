@@ -1,44 +1,27 @@
 // import * as Joi from 'joi';
 import { IUser } from '../interfaces/User';
-import User from '../database/models/User';
-import ValidationError from '../errors/ValidationError';
 import UnauthorizedError from '../errors/UnauthorizedError';
+import User from '../database/models/User';
+import { IUserService } from '../interfaces/Service';
 import { compareEncryptPassword } from '../utils/encrypt';
 
-const invalidLoginMessage = 'Incorrect email or password';
+class UserService implements IUserService {
+  private model = User;
 
-class UserService {
-  static async findOne(payload: IUser): Promise<IUser> {
-    const { password } = payload;
-    const userPayload = { email: payload.email };
-    const user = await User.findOne({
-      where: { ...userPayload },
+  async findUser(payload: Partial<IUser>): Promise<IUser> {
+    const user = await this.model.findOne({
+      where: { ...payload },
       raw: true,
     });
-    if (!user) throw new UnauthorizedError(invalidLoginMessage);
-    if (!compareEncryptPassword(password, user.password)) {
-      throw new UnauthorizedError(invalidLoginMessage);
-    }
     return user as IUser;
   }
 
-  static async validateSigninPayload(payload: IUser): Promise<void> {
-    const hasKeys = 'email' in payload && 'password' in payload;
-    if (!hasKeys) throw new ValidationError('All fields must be filled');
-
-    const { email, password } = payload;
-    const isEmpty = email.trim().length === 0 || password.trim().length === 0;
-    if (isEmpty) throw new ValidationError('All fields must be filled');
-
-    const isString = typeof email === 'string' && typeof password === 'string';
-    if (!isString) throw new UnauthorizedError(invalidLoginMessage);
-
-    // regex copiado da seguinte fonte: https://regexr.com/3e48o
-    const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
-    const validPassword = password.length > 6;
-    if (!validEmail || !validPassword) {
-      throw new UnauthorizedError(invalidLoginMessage);
-    }
+  async validateRegisteredUser(email: string, password: string): Promise<void> {
+    const user = await this.findUser({ email });
+    if (!user) throw new UnauthorizedError('Incorrect email or password');
+    const dbHashPassword = user.password;
+    const isValid = compareEncryptPassword(password, dbHashPassword);
+    if (!isValid) throw new UnauthorizedError('Incorrect email or password');
   }
 }
 

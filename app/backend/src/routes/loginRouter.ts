@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
-// import UserService from '../services/UserService';
+import UserService from '../services/UserService';
 
 const loginRouter = Router();
 
-loginRouter.post('/', UserController.signin);
+const service = new UserService();
+const controller = new UserController(service);
+
+loginRouter.post('/', async (req, res) => { await controller.signin(req, res); });
 
 export default loginRouter;
