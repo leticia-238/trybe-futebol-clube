@@ -6,7 +6,7 @@ import chaiHttp = require("chai-http");
 import User from "../database/models/User";
 import { app } from "../app";
 import AuthService from "../services/AuthService";
-import { mockUserLogin, mockUserToken } from "./mocks/user";
+import { mockUserLogin, mockUserToken, validEmail, validPassword } from "./mocks/user";
 import httpStatus from '../helpers/httpStatus'
 
 chai.use(chaiHttp);
@@ -18,83 +18,114 @@ type ResponseType = {
   body: Record<BodyKeys, string>;
 };
 
-const validEmail = "email@email.com"
-const validPassword = "123456abc"
+const inexistentEmail = "other.email@email.com";
+const inexistentPassword = "other.password";
 
 const { expect } = chai;
 
-describe("Teste Login", () => {
-  let requester = chai.request(app).keepOpen();
-
-  describe("Login válido", () => {
+describe("Testando o endpoint POST /login", () => {
+  describe("requisição com email e senha válidos", () => {
     let chaiHttpResponse: ResponseType;
+
     before(async () => {
       sinon.stub(User, "findOne").resolves(mockUserLogin as User);
       sinon.stub(AuthService, "generateToken").returns(mockUserToken);
-      chaiHttpResponse = await requester
+      chaiHttpResponse = await chai
+        .request(app)
         .post("/login")
-        .send({ email: validEmail, password: validPassword});
+        .send({ email: validEmail, password: validPassword });
     });
 
     after(sinon.restore);
 
     it("deve retornar um status 200", async () => {
-      expect(chaiHttpResponse.status).to.equal(httpStatus.ok);
+      expect(chaiHttpResponse).to.have.status(httpStatus.ok);
     });
+
     it("deve retornar um token", async () => {
       expect(chaiHttpResponse.body).to.deep.equal({ token: mockUserToken });
     });
   });
 
-  describe("Login inválido", () => {
-    let chaiHttpResponses: ResponseType[];
+  let chaiHttpResponses: ResponseType[];
 
-    before(() => {
-      sinon.stub(User, "findOne");
+  describe("requisição com email ou senha faltando", () => {
+    before(async () => {
+      sinon.stub(User, "findOne").rejects();
+      let requester = chai.request(app).keepOpen();
+
+      chaiHttpResponses = await Promise.all([
+        requester.post("/login").send({ password: validPassword }),
+        requester.post("/login").send({ email: validEmail }),
+        requester.post("/login").send({ email: "", password: validPassword }),
+        requester.post("/login").send({ email: validEmail, password: "" }),
+      ]);
+      requester.close();
     });
 
     after(sinon.restore);
 
-    describe("requisição com campos faltando", () => {
-      before(async () => {
-        chaiHttpResponses = await Promise.all([
-          requester.post("/login").send({ password: validPassword }),
-          requester.post("/login").send({ email: validEmail }),
-          requester.post("/login").send({ email: "", password: validPassword }),
-          requester.post("/login").send({ email: validEmail, password: "" }),
-        ]);
-      });
-
-      it("deve retornar o status 400 e uma mensagem de erro", async () => {
-        const message = "All fields must be filled";
-        chaiHttpResponses.forEach((response)=>{
-          expect(response.status).to.equal(httpStatus.badRequest);
-          expect(response.body).to.deep.equal({ message });
-        })
-      });
+    it("deve retornar o status 400", async () => {
+      expect(chaiHttpResponses[0]).to.have.status(httpStatus.badRequest);
+      expect(chaiHttpResponses[1]).to.have.status(httpStatus.badRequest);
+      expect(chaiHttpResponses[2]).to.have.status(httpStatus.badRequest);
+      expect(chaiHttpResponses[3]).to.have.status(httpStatus.badRequest);
     });
 
-    describe("requisição com campos inválidos", () => {
-      before(async () => {
-        chaiHttpResponses = await Promise.all([
-          requester.post("/login").send({
-            email: "invalid",
-            password: validPassword,
-          }),
-          requester.post("/login").send({
-            email: validEmail,
-            password: "123",
-          }),
-        ]);
-      });
+    it("deve retornar uma mensagem de erro", async () => {
+      const message = "All fields must be filled";
+      expect(chaiHttpResponses[0].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[1].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[2].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[3].body).to.deep.equal({ message });
+    });
+  });
 
-      it("deve retornar o status 401 e uma mensagem de erro", async () => {
-        const message = "Incorrect email or password";
-        chaiHttpResponses.forEach((response)=>{
-          expect(response.status).to.equal(httpStatus.unauthorized);
-          expect(response.body).to.deep.equal({ message });
-        })
-      });
+  describe("requisição com email ou senha inválidos", () => {
+    before(async () => {
+      sinon.stub(User, "findOne").resolves();
+      let requester = chai.request(app).keepOpen();
+
+      chaiHttpResponses = await Promise.all([
+        requester.post("/login").send({
+          email: "invalid",
+          password: validPassword,
+        }),
+        requester.post("/login").send({
+          email: validEmail,
+          password: "123",
+        }),
+        requester.post("/login").send({
+          email: inexistentEmail,
+          password: validPassword,
+        }),
+        requester.post("/login").send({
+          email: validEmail,
+          password: inexistentPassword,
+        }),
+      ]);
+      requester.close();
+    });
+
+    after(sinon.restore);
+
+    it("deve retornar o status 401", async () => {
+      expect(chaiHttpResponses[0]).to.have.status(httpStatus.unauthorized);
+      expect(chaiHttpResponses[1]).to.have.status(httpStatus.unauthorized);
+      expect(chaiHttpResponses[2]).to.have.status(httpStatus.unauthorized);
+      expect(chaiHttpResponses[3]).to.have.status(httpStatus.unauthorized);
+    });
+
+    it("deve retornar uma mensagem de erro", async () => {
+      const message = "Incorrect email or password";
+      expect(chaiHttpResponses[0]).to.be.json;
+      expect(chaiHttpResponses[1]).to.be.json;
+      expect(chaiHttpResponses[2]).to.be.json;
+      expect(chaiHttpResponses[3]).to.be.json;
+      expect(chaiHttpResponses[0].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[1].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[2].body).to.deep.equal({ message });
+      expect(chaiHttpResponses[3].body).to.deep.equal({ message });
     });
   });
 });
