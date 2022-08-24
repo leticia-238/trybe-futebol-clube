@@ -7,6 +7,7 @@ import User from "../database/models/User";
 import { app } from "../app";
 import AuthService from "../services/AuthService";
 import { mockUserLogin, mockUserToken } from "./mocks/user";
+import httpStatus from '../helpers/httpStatus'
 
 chai.use(chaiHttp);
 
@@ -17,8 +18,8 @@ type ResponseType = {
   body: Record<BodyKeys, string>;
 };
 
-const BAD_REQUEST = 400;
-const UNAUTHORIZED = 401;
+const validEmail = "email@email.com"
+const validPassword = "123456abc"
 
 const { expect } = chai;
 
@@ -32,13 +33,13 @@ describe("Teste Login", () => {
       sinon.stub(AuthService, "generateToken").returns(mockUserToken);
       chaiHttpResponse = await requester
         .post("/login")
-        .send({ email: "email@email.com", password: "123456abc" });
+        .send({ email: validEmail, password: validPassword});
     });
 
     after(sinon.restore);
 
     it("deve retornar um status 200", async () => {
-      expect(chaiHttpResponse.status).to.equal(200);
+      expect(chaiHttpResponse.status).to.equal(httpStatus.ok);
     });
     it("deve retornar um token", async () => {
       expect(chaiHttpResponse.body).to.deep.equal({ token: mockUserToken });
@@ -57,19 +58,19 @@ describe("Teste Login", () => {
     describe("requisição com campos faltando", () => {
       before(async () => {
         chaiHttpResponses = await Promise.all([
-          requester.post("/login").send({ password: "123456" }),
-          requester.post("/login").send({ email: "email@email.com" }),
+          requester.post("/login").send({ password: validPassword }),
+          requester.post("/login").send({ email: validEmail }),
+          requester.post("/login").send({ email: "", password: validPassword }),
+          requester.post("/login").send({ email: validEmail, password: "" }),
         ]);
       });
 
-      it("deve retornar um status 400", async () => {
-        expect(chaiHttpResponses[0].status).to.equal(BAD_REQUEST);
-        expect(chaiHttpResponses[1].status).to.equal(BAD_REQUEST);
-      });
-      it("deve retornar uma mensagem de erro", async () => {
+      it("deve retornar o status 400 e uma mensagem de erro", async () => {
         const message = "All fields must be filled";
-        expect(chaiHttpResponses[0].body).to.deep.equal({ message });
-        expect(chaiHttpResponses[1].body).to.deep.equal({ message });
+        chaiHttpResponses.forEach((response)=>{
+          expect(response.status).to.equal(httpStatus.badRequest);
+          expect(response.body).to.deep.equal({ message });
+        })
       });
     });
 
@@ -78,23 +79,21 @@ describe("Teste Login", () => {
         chaiHttpResponses = await Promise.all([
           requester.post("/login").send({
             email: "invalid",
-            password: "123456abc",
+            password: validPassword,
           }),
           requester.post("/login").send({
-            email: "email@email.com",
+            email: validEmail,
             password: "123",
           }),
         ]);
       });
 
-      it("deve retornar um status 401", async () => {
-        expect(chaiHttpResponses[0].status).to.equal(UNAUTHORIZED);
-        expect(chaiHttpResponses[1].status).to.equal(UNAUTHORIZED);
-      });
-      it("deve retornar uma mensagem de erro", async () => {
+      it("deve retornar o status 401 e uma mensagem de erro", async () => {
         const message = "Incorrect email or password";
-        expect(chaiHttpResponses[0].body).to.deep.equal({ message });
-        expect(chaiHttpResponses[1].body).to.deep.equal({ message });
+        chaiHttpResponses.forEach((response)=>{
+          expect(response.status).to.equal(httpStatus.unauthorized);
+          expect(response.body).to.deep.equal({ message });
+        })
       });
     });
   });
