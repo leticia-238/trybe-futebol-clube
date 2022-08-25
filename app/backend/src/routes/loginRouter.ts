@@ -9,4 +9,6 @@ const controller = new UserController(service);
 
 loginRouter.post('/', async (req, res) => { await controller.signin(req, res); });
 
+loginRouter.get('/validate', UserController.authenticate);
+
 export default loginRouter;

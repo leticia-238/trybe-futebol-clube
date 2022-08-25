@@ -16,12 +16,13 @@ class UserService implements IUserService {
     return user as IUser;
   }
 
-  async validateRegisteredUser(email: string, password: string): Promise<void> {
+  async validateRegisteredUser(email: string, password: string): Promise<IUser> {
     const user = await this.findUser({ email });
     if (!user) throw new UnauthorizedError('Incorrect email or password');
     const dbHashPassword = user.password;
     const isValid = compareEncryptPassword(password, dbHashPassword);
     if (!isValid) throw new UnauthorizedError('Incorrect email or password');
+    return user;
   }
 }
 

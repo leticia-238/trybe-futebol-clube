@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+// import { IUser } from '../interfaces/User';
 
 export type PayloadType = {
   email: string,
@@ -12,8 +13,13 @@ class AuthService {
     return jwt.sign(payload, secret);
   }
 
-  static verifyToken(token: string): void {
-    jwt.verify(token, secret);
+  static verifyToken(token: string) {
+    let data;
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) throw new Error(err.message);
+      data = decoded;
+    });
+    return data || { role: 'none' };
   }
 }
 

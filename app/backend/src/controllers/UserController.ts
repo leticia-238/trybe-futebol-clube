@@ -10,9 +10,15 @@ class UserController {
     const payload = req.body;
     validateSigninPayload(payload);
     const { email, password } = payload;
-    await this.service.validateRegisteredUser(email, password);
-    const token = AuthService.generateToken(payload);
+    const user = await this.service.validateRegisteredUser(email, password);
+    const token = AuthService.generateToken(user);
     res.status(200).json({ token });
+  }
+
+  static async authenticate(req:Request, res:Response) {
+    const { authorization } = req.headers;
+    const { role } = AuthService.verifyToken(authorization as string);
+    res.status(200).json({ role });
   }
 }
 
