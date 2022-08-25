@@ -29,5 +29,5 @@ export const validateAuthorizationHeader = (token: unknown) => {
 };
 
 export const validateIdParam = (id: unknown) => {
-  if (!Number(id)) throw new NotFoundError('Not Found');
+  if (Number.isNaN(Number(id))) throw new NotFoundError('Not Found');
 };
