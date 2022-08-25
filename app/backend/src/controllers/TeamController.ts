@@ -6,7 +6,7 @@ class TeamController {
   constructor(private service: ITeamService) {}
 
   async getAllTeams(_req: Request, res: Response): Promise<void> {
-    const teams = await this.service.getAllTeams();
+    const teams = await this.service.getAll();
     res.status(200).json(teams);
   }
 
