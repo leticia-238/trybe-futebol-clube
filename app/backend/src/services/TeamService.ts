@@ -12,7 +12,7 @@ class TeamService implements ITeamService {
 
   async getTeamById(id: string): Promise<ITeam> {
     const team = await this.model.findByPk(id, { raw: true });
-    if (!team) throw new NotFoundError('team not found');
+    if (!team) throw new NotFoundError('Not Found');
     return team as ITeam;
   }
 }
