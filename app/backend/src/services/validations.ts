@@ -1,6 +1,7 @@
 import { IUserLogin } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import ValidationError from '../errors/ValidationError';
+import NotFoundError from '../errors/NotFoundError';
 
 const invalidLoginMessage = 'Incorrect email or password';
 
@@ -25,4 +26,8 @@ export const validateSigninPayload = (payload: IUserLogin): void => {
 
 export const validateAuthorizationHeader = (token: unknown) => {
   if (!token) throw new ValidationError('token not found');
+};
+
+export const validateIdParam = (id: unknown) => {
+  if (!Number(id)) throw new NotFoundError('Not Found');
 };

@@ -131,5 +131,33 @@
     ],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "e4fa77fd-8599-4c77-9025-84339722172f",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "de8c2e4d-ef67-495a-bf58-6cb6bae55503",
+    "name": "all teams",
+    "url": "localhost:3001/teams",
+    "method": "GET",
+    "sortNum": 45000,
+    "created": "2022-08-25T18:11:35.519Z",
+    "modified": "2022-08-25T18:12:07.214Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "cb1cdea5-d8cf-42cb-92b1-193e07703fcb",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "de8c2e4d-ef67-495a-bf58-6cb6bae55503",
+    "name": "team by id",
+    "url": "localhost:3001/teams/1",
+    "method": "GET",
+    "sortNum": 55000,
+    "created": "2022-08-25T18:12:15.291Z",
+    "modified": "2022-08-25T18:12:46.261Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
