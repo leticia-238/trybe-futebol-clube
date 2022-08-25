@@ -10,3 +10,7 @@ export interface IUser extends IUserLogin {
   username: string,
   role: RoleType,
 }
+
+export interface IUserService {
+  validateRegisteredUser(email: string, password: string): Promise<IUser>
+}

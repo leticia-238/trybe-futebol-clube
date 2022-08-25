@@ -1,8 +1,6 @@
-// import * as Joi from 'joi';
-import { IUser } from '../interfaces/User';
+import { IUser, IUserService } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import User from '../database/models/User';
-import { IUserService } from '../interfaces/Service';
 import { compareEncryptPassword } from '../utils/encrypt';
 
 class UserService implements IUserService {

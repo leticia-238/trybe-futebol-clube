@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { validateSigninPayload, validateAuthorizationHeader } from '../services/validations';
-import { IUserService } from '../interfaces/Service';
+import { IUserService } from '../interfaces/User';
 import AuthService from '../services/AuthService';
 
 class UserController {
