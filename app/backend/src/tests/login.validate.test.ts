@@ -6,19 +6,13 @@ import chaiHttp = require("chai-http");
 import User from "../database/models/User";
 import { app } from "../app";
 import { mockUserLogin, validEmail, validPassword } from "./mocks/user";
-import httpStatus from '../helpers/httpStatus'
-import { RoleType } from "../interfaces/User";
+import httpStatus from "../helpers/httpStatus";
 
 chai.use(chaiHttp);
 
 type ResponseType = {
   status: number;
-  // headers: { 
-  //   authorization: {
-  //     role: RoleType 
-  //   }
-  // }
-  body: {token:string}
+  body: { token: string };
 };
 
 const { expect } = chai;
@@ -30,15 +24,16 @@ describe("Testando o endpoint GET /login/validate", () => {
     before(async () => {
       sinon.stub(User, "findOne").resolves(mockUserLogin as User);
       chaiHttpResponse = await chai
-        .request(app).post("/login")
+        .request(app)
+        .post("/login")
         .send({ email: validEmail, password: validPassword });
-        
-      const {token} = chaiHttpResponse.body
-        
+
+      const { token } = chaiHttpResponse.body;
+
       chaiHttpResponse = await chai
         .request(app)
         .get("/login/validate")
-        .set({ Authorization: token })
+        .set({ Authorization: token });
     });
 
     after(sinon.restore);
@@ -51,4 +46,4 @@ describe("Testando o endpoint GET /login/validate", () => {
       expect(chaiHttpResponse.body).to.deep.equal({ role: "admin" });
     });
   });
-})
+});
