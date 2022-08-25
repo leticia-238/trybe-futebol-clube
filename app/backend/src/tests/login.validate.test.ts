@@ -15,6 +15,8 @@ type ResponseType = {
   body: { token: string };
 };
 
+const invalidToken = "123&$*%34yuft$#56765"
+
 const { expect } = chai;
 
 describe("Testando o endpoint GET /login/validate", () => {
@@ -38,12 +40,55 @@ describe("Testando o endpoint GET /login/validate", () => {
 
     after(sinon.restore);
 
-    it("deve retornar um status 200", async () => {
+    it("deve retornar o status 200", async () => {
       expect(chaiHttpResponse).to.have.status(httpStatus.ok);
     });
 
     it("deve retornar um objeto com a 'role' do user", async () => {
       expect(chaiHttpResponse.body).to.deep.equal({ role: "admin" });
+    });
+  });
+  
+  describe("requisição com token inválido", () => {
+    let chaiHttpResponse: ResponseType;
+
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get("/login/validate")
+        .set({ Authorization: invalidToken });
+    });
+
+    after(sinon.restore);
+
+    it("deve retornar o status 401", async () => {
+      expect(chaiHttpResponse).to.have.status(httpStatus.unauthorized);
+    });
+
+    it("deve retornar uma mensagem de erro", async () => {
+      const message = 'invalid token'
+      expect(chaiHttpResponse.body).to.deep.equal({ message });
+    });
+  });
+  
+  describe("requisição sem o token de autenticação", () => {
+    let chaiHttpResponse: ResponseType;
+
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get("/login/validate")
+    });
+
+    after(sinon.restore);
+
+    it("deve retornar o status 400", async () => {
+      expect(chaiHttpResponse).to.have.status(httpStatus.badRequest);
+    });
+
+    it("deve retornar uma mensagem de erro", async () => {
+      const message = 'token not found'
+      expect(chaiHttpResponse.body).to.deep.equal({ message });
     });
   });
 });

@@ -112,5 +112,24 @@
     ],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "7a404fcd-a22f-47d1-a4bf-1b21d1c4954f",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "07fd53f0-09da-49bb-a700-750e2a8f6142",
+    "name": "inexistent token",
+    "url": "localhost:3001/login/validate",
+    "method": "GET",
+    "sortNum": 45000,
+    "created": "2022-08-25T14:51:12.902Z",
+    "modified": "2022-08-25T17:06:43.737Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": ""
+      }
+    ],
+    "params": [],
+    "tests": []
   }
 ]
