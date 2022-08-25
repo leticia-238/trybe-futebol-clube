@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import validateSigninPayload from '../services/validations';
+import { validateSigninPayload, validateAuthorizationHeader } from '../services/validations';
 import { IUserService } from '../interfaces/Service';
 import AuthService from '../services/AuthService';
 
@@ -17,6 +17,7 @@ class UserController {
 
   static async authenticate(req:Request, res:Response) {
     const { authorization } = req.headers;
+    validateAuthorizationHeader(authorization);
     const { role } = AuthService.verifyToken(authorization as string);
     res.status(200).json({ role });
   }

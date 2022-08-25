@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-// import { IUser } from '../interfaces/User';
+import UnauthorizedError from '../errors/UnauthorizedError';
 
 export type PayloadType = {
   email: string,
@@ -16,7 +16,7 @@ class AuthService {
   static verifyToken(token: string) {
     let data;
     jwt.verify(token, secret, (err, decoded) => {
-      if (err) throw new Error(err.message);
+      if (err) throw new UnauthorizedError('invalid token');
       data = decoded;
     });
     return data || { role: 'none' };

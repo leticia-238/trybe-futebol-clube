@@ -4,7 +4,7 @@ import ValidationError from '../errors/ValidationError';
 
 const invalidLoginMessage = 'Incorrect email or password';
 
-const validateSigninPayload = (payload: IUserLogin): void => {
+export const validateSigninPayload = (payload: IUserLogin): void => {
   const hasKeys = 'email' in payload && 'password' in payload;
   if (!hasKeys) throw new ValidationError('All fields must be filled');
 
@@ -23,4 +23,6 @@ const validateSigninPayload = (payload: IUserLogin): void => {
   }
 };
 
-export default validateSigninPayload;
+export const validateAuthorizationHeader = (token: unknown) => {
+  if (!token) throw new ValidationError('token not found');
+};
