@@ -1,16 +1,17 @@
 export type RoleType = 'admin' | 'user';
 
-export interface IUserLogin {
-  email: string,
-  password: string
-}
-
-export interface IUser extends IUserLogin {
+export interface IUser {
   id: number,
   username: string,
   role: RoleType,
+  email: string,
+}
+
+export interface IUserDB extends IUser {
+  password: string
 }
 
 export interface IUserService {
-  validateRegisteredUser(email: string, password: string): Promise<IUser>
+  getOne(payload: Partial<IUserDB>): Promise<IUserDB>,
+  validateRegisteredUser(email: string, password: string): Promise<IUserDB>
 }

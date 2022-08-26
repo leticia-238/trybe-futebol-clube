@@ -13,7 +13,7 @@ class TeamController {
   async getTeamById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     validateIdParam(id);
-    const team = await this.service.getTeamById(id);
+    const team = await this.service.getById(id);
     res.status(200).json(team);
   }
 }

@@ -10,10 +10,16 @@ class TeamService implements ITeamService {
     return teams;
   }
 
-  async getTeamById(id: string): Promise<ITeam> {
+  async getById(id: string): Promise<ITeam> {
     const team = await this.model.findByPk(id, { raw: true });
-    if (!team) throw new NotFoundError('Not Found');
+    this.validateIfExists(team as ITeam);
     return team as ITeam;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private validateIfExists(team: ITeam): ITeam {
+    if (!team) throw new NotFoundError('Not Found');
+    return team;
   }
 }
 

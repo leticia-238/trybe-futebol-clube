@@ -6,5 +6,5 @@ export interface ITeam {
 }
 
 export interface ITeamService extends IService<ITeam> {
-  getTeamById(id: string): Promise<ITeam>
+  getById(id: string): Promise<ITeam>,
 }
