@@ -177,13 +177,13 @@
   {
     "_id": "2d6bb392-92bf-4615-80e7-39053bf9f534",
     "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
-    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "containerId": "2e774daf-e380-43ac-b9de-2c910ae65b35",
     "name": "all matches",
     "url": "localhost:3001/matches",
     "method": "GET",
-    "sortNum": 75000,
+    "sortNum": 10000,
     "created": "2022-08-25T23:00:31.253Z",
-    "modified": "2022-08-25T23:05:57.757Z",
+    "modified": "2022-08-26T15:56:01.903Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -191,13 +191,13 @@
   {
     "_id": "d3f41c86-3a46-40d0-b611-e9b5f9ebc317",
     "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
-    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "containerId": "2e774daf-e380-43ac-b9de-2c910ae65b35",
     "name": "matches param inProgress",
     "url": "localhost:3001/matches?inProgress=true",
     "method": "GET",
-    "sortNum": 85000,
+    "sortNum": 20000,
     "created": "2022-08-26T13:09:50.987Z",
-    "modified": "2022-08-26T14:05:23.901Z",
+    "modified": "2022-08-26T15:56:04.514Z",
     "headers": [],
     "params": [
       {
@@ -211,13 +211,13 @@
   {
     "_id": "1522b5a8-4a4b-4b5e-8edf-869efb2d12b8",
     "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
-    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "containerId": "2e774daf-e380-43ac-b9de-2c910ae65b35",
     "name": "matches param inProgress invalid",
     "url": "localhost:3001/matches?inProgress=abc",
     "method": "GET",
-    "sortNum": 95000,
+    "sortNum": 30000,
     "created": "2022-08-26T14:05:15.691Z",
-    "modified": "2022-08-26T14:05:15.691Z",
+    "modified": "2022-08-26T15:56:06.015Z",
     "headers": [],
     "params": [
       {
@@ -231,13 +231,13 @@
   {
     "_id": "1fe53c3f-e608-45be-af40-34a783bfa17d",
     "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
-    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "containerId": "2e774daf-e380-43ac-b9de-2c910ae65b35",
     "name": "matches query  invalid ",
     "url": "localhost:3001/matches?oi",
     "method": "GET",
-    "sortNum": 105000,
+    "sortNum": 40000,
     "created": "2022-08-26T14:11:10.619Z",
-    "modified": "2022-08-26T14:13:14.180Z",
+    "modified": "2022-08-26T15:56:07.444Z",
     "headers": [],
     "params": [
       {
@@ -246,6 +246,33 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "20539541-ac60-49f4-a049-933c121cb6cc",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "152c0401-ecd3-4fec-82a2-fa9748f545af",
+    "name": "match",
+    "url": "localhost:3001/matches",
+    "method": "POST",
+    "sortNum": 115000,
+    "created": "2022-08-26T15:56:28.904Z",
+    "modified": "2022-08-26T23:53:19.251Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkeGkuSHhrMWN6QU8wblpSLi5CMzkzdTEwYUVEMFJRMU4zUEFFWFE3SHh0TGpLUEVaQnUuUFciLCJpYXQiOjE2NjE1NTc5NzF9.j3sSSu_DFlKuY8hxOTZZ_vgsJmtss1bPSWJPqPrTNcE"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"homeTeam\": 16, \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer"
+    },
     "tests": []
   }
 ]
