@@ -1,6 +1,6 @@
-import { IMatchDB, IMatchWithTeams } from "../../interfaces/Match";
+import { IMatchDB, IMatchWithTeams } from '../../interfaces/Match';
 
-export const mockMatchesResponse: IMatchWithTeams[] = [
+export const mockAllMatchesResponse: IMatchWithTeams[] = [
   {
     id: 1,
     homeTeam: 16,
@@ -9,10 +9,10 @@ export const mockMatchesResponse: IMatchWithTeams[] = [
     awayTeamGoals: 1,
     inProgress: false,
     teamHome: {
-      teamName: "São Paulo",
+      teamName: 'São Paulo',
     },
     teamAway: {
-      teamName: "Grêmio",
+      teamName: 'Grêmio',
     },
   },
   {
@@ -23,15 +23,15 @@ export const mockMatchesResponse: IMatchWithTeams[] = [
     awayTeamGoals: 0,
     inProgress: true,
     teamHome: {
-      teamName: "São Paulo",
+      teamName: 'São Paulo',
     },
     teamAway: {
-      teamName: "Internacional",
+      teamName: 'Internacional',
     },
   },
 ];
 
-export const mockMatchesDb: IMatchDB[] = [
+export const mockAllMatchesDb: IMatchDB[] = [
   {
     id: 1,
     homeTeam: 16,
@@ -39,8 +39,8 @@ export const mockMatchesDb: IMatchDB[] = [
     awayTeam: 8,
     awayTeamGoals: 1,
     inProgress: false,
-    "teamHome.teamName": "São Paulo",
-    "teamAway.teamName": "Grêmio",
+    'teamHome.teamName': 'São Paulo',
+    'teamAway.teamName': 'Grêmio',
   },
   {
     id: 41,
@@ -49,7 +49,37 @@ export const mockMatchesDb: IMatchDB[] = [
     awayTeam: 9,
     awayTeamGoals: 0,
     inProgress: true,
-    "teamHome.teamName": "São Paulo",
-    "teamAway.teamName": "Internacional",
+    'teamHome.teamName': 'São Paulo',
+    'teamAway.teamName': 'Internacional',
+  },
+];
+
+export const mockMatchesWithOptionsResponse: IMatchWithTeams[] = [
+  {
+    id: 1,
+    homeTeam: 16,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: false,
+    teamHome: {
+      teamName: 'São Paulo',
+    },
+    teamAway: {
+      teamName: 'Grêmio',
+    },
+  },
+];
+
+export const mockMatchesWithOptionsDb: IMatchDB[] = [
+  {
+    id: 1,
+    homeTeam: 16,
+    homeTeamGoals: 1,
+    awayTeam: 8,
+    awayTeamGoals: 1,
+    inProgress: false,
+    'teamHome.teamName': 'São Paulo',
+    'teamAway.teamName': 'Grêmio',
   },
 ];
