@@ -36,11 +36,11 @@ export const validateIdParam = (id: unknown) => {
 export const validateQuery = (query: QueryType) => {
   if ('inProgress' in query) {
     if (query.inProgress !== 'true' && query.inProgress !== 'false') {
-      throw new ValidationError('Parâmetro da query inválido');
+      throw new ValidationError('parâmetro da query com valor inválido');
     }
     return { inProgress: query.inProgress === 'true' };
   }
 
-  if (Object.keys(query).length !== 0) throw new ValidationError('Query inválida');
+  if (Object.keys(query).length !== 0) throw new ValidationError('query com parâmetros inválidos');
   return {};
 };
