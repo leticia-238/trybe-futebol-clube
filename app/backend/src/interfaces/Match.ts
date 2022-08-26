@@ -30,5 +30,6 @@ export type OptionsType = {
 };
 
 export interface IMatchService extends IService<IMatchDB>{
-  getFormatedMatchesData(options: OptionsType): Promise<IMatchWithTeams[]>
+  getFormatedMatchesData(options: OptionsType): Promise<IMatchWithTeams[]>,
+  saveMatch(match: IMatch): Promise<IMatch>
 }

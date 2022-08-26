@@ -11,6 +11,12 @@ class MatchController {
     const matches = await this.service.getFormatedMatchesData(validQuery);
     res.status(200).json(matches);
   }
+
+  async saveMatch(req: Request, res: Response): Promise<void> {
+    const match = req.body;
+    const createdMatch = await this.service.saveMatch(match);
+    res.status(201).json(createdMatch);
+  }
 }
 
 export default MatchController;

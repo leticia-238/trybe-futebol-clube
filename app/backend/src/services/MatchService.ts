@@ -1,5 +1,5 @@
 import Team from '../database/models/Team';
-import { IMatchDB, IMatchService, IMatchWithTeams, OptionsType } from '../interfaces/Match';
+import { IMatch, IMatchDB, IMatchService, IMatchWithTeams, OptionsType } from '../interfaces/Match';
 import Match from '../database/models/Match';
 
 class MatchService implements IMatchService {
@@ -37,7 +37,12 @@ class MatchService implements IMatchService {
     return result;
   }
 
-  //  async getMatches;
+  async saveMatch(match: IMatch): Promise<IMatch> {
+    const createdMatch = await this.model.create({
+      ...match, inProgress: true,
+    });
+    return createdMatch;
+  }
 }
 
 export default MatchService;
