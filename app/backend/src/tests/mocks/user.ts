@@ -1,11 +1,11 @@
 import { encryptPassword } from "../../utils/encrypt";
-import { IUser } from "../../interfaces/User";
+import { IUserDB } from "../../interfaces/User";
 
 export const validEmail = "email@email.com";
 export const validPassword = "123456abc";
 export const hashPassword = encryptPassword(validPassword);
 
-export const mockUserLogin: IUser = {
+export const mockUserLogin: IUserDB = {
   id: 1,
   username: "user",
   role: "admin",
