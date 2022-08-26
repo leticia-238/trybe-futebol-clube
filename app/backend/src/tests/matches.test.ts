@@ -23,9 +23,10 @@ type ResponseType = {
 const { expect } = chai;
 
 describe('Testando o endpoint GET /matches', () => {
+  let chaiHttpResponse: ResponseType;
+  let chaiHttpResponses: ResponseType[];
+  
   describe('requisição sem nenhuma query', () => {
-    let chaiHttpResponse: ResponseType;
-
     before(async () => {
       sinon.stub(Match, 'findAll').resolves(mockAllMatchesDb as unknown as Match[]);
       chaiHttpResponse = await chai.request(app).get('/matches');
@@ -43,8 +44,6 @@ describe('Testando o endpoint GET /matches', () => {
   });
 
   describe('requisição com o parâmetro da query recebendo um valor válido', () => {
-    let chaiHttpResponse: ResponseType;
-
     before(async () => {
       sinon.stub(Match, 'findAll').resolves(mockMatchesWithOptionsDb as unknown as Match[]);
       chaiHttpResponse = await chai
@@ -64,8 +63,6 @@ describe('Testando o endpoint GET /matches', () => {
   });
 
   describe('requisição com o parâmetro da query recebendo um valor inválido', () => {
-    let chaiHttpResponse: ResponseType;
-
     before(async () => {
       sinon.stub(Match, 'findAll').rejects();
       chaiHttpResponse = await chai.request(app).get('/matches?inProgress=abc');
@@ -84,8 +81,6 @@ describe('Testando o endpoint GET /matches', () => {
   });
 
   describe('requisição com o parâmetro da query inválido', () => {
-    let chaiHttpResponses: ResponseType[];
-
     before(async () => {
       sinon.stub(Match, 'findAll').rejects();
       const requester = chai.request(app).keepOpen();
@@ -94,6 +89,7 @@ describe('Testando o endpoint GET /matches', () => {
         requester.get('/matches?invalidParam=true'),
         requester.get('/matches?invalidParam=oi&abc=8'),
       ]);
+      requester.close();
     });
 
     after(sinon.restore);
