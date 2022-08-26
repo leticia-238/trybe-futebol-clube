@@ -21,6 +21,14 @@ export interface IMatchWithTeams extends IMatch {
   teamAway: TeamType
 }
 
+export type QueryType = {
+  inProgress?: string
+};
+
+export type OptionsType = {
+  inProgress?: boolean
+};
+
 export interface IMatchService extends IService<IMatchDB>{
-  getformatedMatchesData(): Promise<IMatchWithTeams[]>
+  getFormatedMatchesData(options: OptionsType): Promise<IMatchWithTeams[]>
 }

@@ -187,5 +187,65 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "d3f41c86-3a46-40d0-b611-e9b5f9ebc317",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "name": "matches param inProgress",
+    "url": "localhost:3001/matches?inProgress=true",
+    "method": "GET",
+    "sortNum": 85000,
+    "created": "2022-08-26T13:09:50.987Z",
+    "modified": "2022-08-26T14:05:23.901Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "inProgress",
+        "value": "true",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "1522b5a8-4a4b-4b5e-8edf-869efb2d12b8",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "name": "matches param inProgress invalid",
+    "url": "localhost:3001/matches?inProgress=abc",
+    "method": "GET",
+    "sortNum": 95000,
+    "created": "2022-08-26T14:05:15.691Z",
+    "modified": "2022-08-26T14:05:15.691Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "inProgress",
+        "value": "abc",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "1fe53c3f-e608-45be-af40-34a783bfa17d",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "979858b5-49f8-4b3b-b125-0d1ed4603f08",
+    "name": "matches query  invalid ",
+    "url": "localhost:3001/matches?oi",
+    "method": "GET",
+    "sortNum": 105000,
+    "created": "2022-08-26T14:11:10.619Z",
+    "modified": "2022-08-26T14:13:14.180Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "oi",
+        "value": "",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

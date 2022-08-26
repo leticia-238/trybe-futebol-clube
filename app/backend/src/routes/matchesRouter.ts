@@ -7,6 +7,6 @@ const matchesRouter = Router();
 const service = new MatchService();
 const controller = new MatchController(service);
 
-matchesRouter.get('/', async (req, res) => { await controller.getAllMatches(req, res); });
+matchesRouter.get('/', async (req, res) => { await controller.getMatches(req, res); });
 
 export default matchesRouter;

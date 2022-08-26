@@ -1,3 +1,4 @@
+import { QueryType } from '../interfaces/Match';
 import { IUserDB } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import ValidationError from '../errors/ValidationError';
@@ -30,4 +31,16 @@ export const validateAuthorizationHeader = (token: unknown) => {
 
 export const validateIdParam = (id: unknown) => {
   if (Number.isNaN(Number(id))) throw new NotFoundError('Not Found');
+};
+
+export const validateQuery = (query: QueryType) => {
+  if ('inProgress' in query) {
+    if (query.inProgress !== 'true' && query.inProgress !== 'false') {
+      throw new ValidationError('Parâmetro da query inválido');
+    }
+    return { inProgress: query.inProgress === 'true' };
+  }
+
+  if (Object.keys(query).length !== 0) throw new ValidationError('Query inválida');
+  return {};
 };
