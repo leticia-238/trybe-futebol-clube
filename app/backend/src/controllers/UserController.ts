@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { validateSigninPayload, validateAuthorizationHeader } from '../services/validations';
-import { IUserService } from '../interfaces/User';
+import { validateSigninPayload } from '../services/validations';
+import { IUserService, RoleType } from '../interfaces/User';
 import AuthService from '../services/AuthService';
+import { RequestWithDecodedJwt } from '../interfaces/Request';
 
 class UserController {
   constructor(private service: IUserService) {}
@@ -15,10 +16,9 @@ class UserController {
     res.status(200).json({ token });
   }
 
-  static async authenticate(req:Request, res:Response) {
-    const { authorization } = req.headers;
-    validateAuthorizationHeader(authorization);
-    const { role } = AuthService.verifyToken(authorization as string);
+  // eslint-disable-next-line class-methods-use-this
+  async getUserRole(req: RequestWithDecodedJwt, res: Response) {
+    const { role } = req.decodedData as unknown as { role: RoleType };
     res.status(200).json({ role });
   }
 }

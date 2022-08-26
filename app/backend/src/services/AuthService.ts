@@ -19,7 +19,7 @@ class AuthService {
       if (err) throw new UnauthorizedError('invalid token');
       data = decoded;
     });
-    return data || { role: 'none' };
+    return data;
   }
 }
 
