@@ -1,11 +1,11 @@
-import { IUserLogin } from '../interfaces/User';
+import { IUserDB } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import ValidationError from '../errors/ValidationError';
 import NotFoundError from '../errors/NotFoundError';
 
 const invalidLoginMessage = 'Incorrect email or password';
 
-export const validateSigninPayload = (payload: IUserLogin): void => {
+export const validateSigninPayload = (payload: IUserDB): void => {
   const hasKeys = 'email' in payload && 'password' in payload;
   if (!hasKeys) throw new ValidationError('All fields must be filled');
 
