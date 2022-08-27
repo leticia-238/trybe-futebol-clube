@@ -8,12 +8,8 @@ const matchesRouter = Router();
 const service = new MatchService();
 const controller = new MatchController(service);
 
-matchesRouter.get('/', async (req, res) => { await controller.getMatches(req, res); });
+matchesRouter.get('/', controller.getMatches);
 
-matchesRouter.post(
-  '/',
-  AuthMiddleware.authenticate,
-  async (req, res) => { await controller.saveMatch(req, res); },
-);
+matchesRouter.post('/', AuthMiddleware.authenticate, controller.saveMatch);
 
 export default matchesRouter;

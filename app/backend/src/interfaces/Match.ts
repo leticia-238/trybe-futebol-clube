@@ -1,5 +1,3 @@
-import { IService } from './IService';
-
 export interface IMatch {
   id: number,
   homeTeam: number,
@@ -29,7 +27,10 @@ export type OptionsType = {
   inProgress?: boolean
 };
 
-export interface IMatchService extends IService<IMatchDB>{
-  getFormatedMatchesData(options: OptionsType): Promise<IMatchWithTeams[]>,
+export type GetterList<T> = (options: OptionsType) => Promise<T[]>;
+
+export interface IMatchService {
+  getAll: GetterList<IMatchDB>,
+  getFormatedMatchesData: GetterList<IMatchWithTeams>
   saveMatch(match: IMatch): Promise<IMatch>
 }

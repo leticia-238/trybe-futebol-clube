@@ -1,11 +1,11 @@
 import Team from '../database/models/Team';
-import { IMatch, IMatchDB, IMatchService, IMatchWithTeams, OptionsType } from '../interfaces/Match';
+import { GetterList, IMatch, IMatchDB, IMatchService, IMatchWithTeams } from '../interfaces/Match';
 import Match from '../database/models/Match';
 
 class MatchService implements IMatchService {
   private model = Match;
 
-  async getAll(options: OptionsType = {}): Promise<IMatchDB[]> {
+  getAll: GetterList<IMatchDB> = async (options) => {
     const matches = await this.model.findAll({
       where: { ...options },
       include: [{
@@ -20,9 +20,9 @@ class MatchService implements IMatchService {
       raw: true,
     });
     return matches as unknown as IMatchDB[];
-  }
+  };
 
-  async getFormatedMatchesData(options: OptionsType): Promise<IMatchWithTeams[]> {
+  getFormatedMatchesData: GetterList<IMatchWithTeams> = async (options) => {
     const matches = await this.getAll(options);
     const result = matches.map((match) => ({
       id: match.id,
@@ -35,14 +35,14 @@ class MatchService implements IMatchService {
       teamAway: { teamName: match['teamAway.teamName'] },
     }));
     return result;
-  }
+  };
 
-  async saveMatch(match: IMatch): Promise<IMatch> {
+  saveMatch = async (match: IMatch): Promise<IMatch> => {
     const createdMatch = await this.model.create({
       ...match, inProgress: true,
     });
     return createdMatch;
-  }
+  };
 }
 
 export default MatchService;

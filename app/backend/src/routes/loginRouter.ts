@@ -8,12 +8,8 @@ const loginRouter = Router();
 const service = new UserService();
 const controller = new UserController(service);
 
-loginRouter.post('/', async (req, res) => { await controller.signin(req, res); });
+loginRouter.post('/', controller.signin);
 
-loginRouter.get(
-  '/validate',
-  AuthMiddleware.authenticate,
-  async (req, res) => { await controller.getUserRole(req, res); },
-);
+loginRouter.get('/validate', AuthMiddleware.authenticate, controller.getUserRole);
 
 export default loginRouter;
