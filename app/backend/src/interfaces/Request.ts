@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { RoleType } from './User';
+import { IUserWithPassword } from './IUserWithPassword';
 
 export interface RequestWithDecodedJwt extends Request {
-  decodedData?: { role: RoleType }
+  decodedData?: Pick<IUserWithPassword, 'role'>
 }

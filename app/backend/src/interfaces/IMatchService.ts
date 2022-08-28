@@ -13,7 +13,7 @@ export type OptionsType = {
 };
 
 export interface IMatchService {
-  getAll: GetterList<IMatchWithTeamNamesDb[]>,
-  getFormatedMatchesData: GetterList<IMatchWithTeamNames[]>
+  getAllWithTeamNames: GetterList<IMatchWithTeamNamesDb>,
+  getFormatedMatchesData: GetterList<IMatchWithTeamNames>
   saveMatch(match: IMatch): Promise<IMatch>
 }

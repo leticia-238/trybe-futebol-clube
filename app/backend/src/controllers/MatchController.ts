@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
+import { IMatchService } from '../interfaces/IMatchService';
 import { validateQuery } from '../services/validations';
-import { IMatchService } from '../interfaces/Match';
 
 class MatchController {
   constructor(private service: IMatchService) {}

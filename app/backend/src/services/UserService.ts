@@ -1,18 +1,19 @@
-import { GetterUser, IUserDB, IUserLogin, IUserService } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import User from '../database/models/User';
 import { compareEncryptPassword } from '../utils/encrypt';
+import { GetterUser, IUserLogin, IUserService } from '../interfaces/IUserService';
+import { IUserWithPassword } from '../interfaces/IUserWithPassword';
 
 class UserService implements IUserService {
   private model = User;
 
-  getOne: GetterUser<Partial<IUserDB>> = async (payload) => {
+  getOne: GetterUser<Partial<IUserWithPassword>> = async (payload) => {
     const user = await this.model.findOne({
       where: { ...payload },
       raw: true,
     });
-    this.validateIfExists(user as IUserDB);
-    return user as IUserDB;
+    this.validateIfExists(user as IUserWithPassword);
+    return user as IUserWithPassword;
   };
 
   validateRegisteredUser: GetterUser<IUserLogin> = async (userLogin) => {
@@ -23,7 +24,7 @@ class UserService implements IUserService {
     return user;
   };
 
-  validateIfExists = (user: IUserDB): IUserDB => {
+  validateIfExists = (user: IUserWithPassword): IUserWithPassword => {
     if (!user) throw new UnauthorizedError('Incorrect email or password');
     return user;
   };

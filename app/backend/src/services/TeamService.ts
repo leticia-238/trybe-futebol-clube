@@ -1,6 +1,7 @@
 import NotFoundError from '../errors/NotFoundError';
-import { ITeam, ITeamService } from '../interfaces/Team';
 import Team from '../database/models/Team';
+import { ITeamService } from '../interfaces/ITeamService';
+import { ITeam } from '../interfaces/ITeam';
 
 class TeamService implements ITeamService {
   private model = Team;

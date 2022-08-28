@@ -1,12 +1,12 @@
-import { QueryType } from '../interfaces/Match';
-import { IUserDB } from '../interfaces/User';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import ValidationError from '../errors/ValidationError';
 import NotFoundError from '../errors/NotFoundError';
+import { QueryType } from '../interfaces/IMatchService';
+import { IUserWithPassword } from '../interfaces/IUserWithPassword';
 
 const invalidLoginMessage = 'Incorrect email or password';
 
-export const validateSigninPayload = (payload: IUserDB): void => {
+export const validateSigninPayload = (payload: IUserWithPassword): void => {
   const hasKeys = 'email' in payload && 'password' in payload;
   if (!hasKeys) throw new ValidationError('All fields must be filled');
 

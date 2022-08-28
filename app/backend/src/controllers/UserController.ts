@@ -1,8 +1,9 @@
 import { RequestHandler, Response } from 'express';
 import { validateSigninPayload } from '../services/validations';
-import { IUserService, RoleType } from '../interfaces/User';
 import AuthService from '../services/AuthService';
 import { RequestWithDecodedJwt } from '../interfaces/Request';
+import { IUserService } from '../interfaces/IUserService';
+import { IUser } from '../interfaces/IUser';
 
 class UserController {
   constructor(private service: IUserService) {}
@@ -16,7 +17,7 @@ class UserController {
   };
 
   getUserRole = (req: RequestWithDecodedJwt, res: Response) => {
-    const { role } = req.decodedData as unknown as { role: RoleType };
+    const { role } = req.decodedData as unknown as IUser;
     res.status(200).json({ role });
   };
 }
