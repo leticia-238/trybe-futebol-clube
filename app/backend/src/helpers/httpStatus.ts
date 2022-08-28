@@ -1,6 +1,9 @@
-export default {
-  ok: 200,
-  badRequest: 400,
-  unauthorized: 401,
-  notFound: 404,
-};
+enum Status {
+  ok = 200,
+  created = 201,
+  badRequest = 400,
+  unauthorized = 401,
+  notFound = 404,
+}
+
+export default Status;
