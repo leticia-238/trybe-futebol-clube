@@ -2,7 +2,7 @@ import { IMatch } from './IMatch';
 import { IMatchWithTeamNames } from './IMatchWithTeamNames';
 import { IMatchWithTeamNamesDb } from './IMatchWithTeamNamesDb';
 
-export type GetterList<T> = (options: OptionsType) => Promise<T[]>;
+export type GetList<T> = (options: OptionsType) => Promise<T[]>;
 
 export type QueryType = {
   inProgress?: string
@@ -13,7 +13,7 @@ export type OptionsType = {
 };
 
 export interface IMatchService {
-  getAllWithTeamNames: GetterList<IMatchWithTeamNamesDb>,
-  getFormatedMatchesData: GetterList<IMatchWithTeamNames>
+  getAllWithTeamNames: GetList<IMatchWithTeamNamesDb>,
+  getFormatedMatchesData: GetList<IMatchWithTeamNames>
   saveMatch(match: IMatch): Promise<IMatch>
 }

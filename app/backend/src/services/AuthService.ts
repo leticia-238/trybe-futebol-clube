@@ -1,11 +1,11 @@
 import * as jwt from 'jsonwebtoken';
-import { IUserLogin } from '../interfaces/User';
+import { IUserWithPassword } from '../interfaces/IUserWithPassword';
 import UnauthorizedError from '../errors/UnauthorizedError';
 
 const secret = process.env.JWT_SECRET || 'jwt_secret';
 
 class AuthService {
-  static generateToken = (payload: IUserLogin): string => (
+  static generateToken = (payload: IUserWithPassword): string => (
     jwt.sign(payload, secret)
   );
 
