@@ -4,9 +4,9 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
-import { ITeam } from '../interfaces/Team';
 import Team from '../database/models/Team';
-import { mockTeam, mockTeams } from './mocks/teams';
+import { team, teams } from './mocks/teams_mocks';
+import { ITeam } from '../interfaces/ITeam';
 chai.use(chaiHttp);
 
 type ResponseType = {
@@ -20,7 +20,7 @@ describe('Testando o endpoint GET /teams', () => {
   let chaiHttpResponse: ResponseType;
 
   before(async () => {
-    sinon.stub(Team, 'findAll').resolves(mockTeams as Team[]);
+    sinon.stub(Team, 'findAll').resolves(teams as Team[]);
     chaiHttpResponse = await chai.request(app).get('/teams');
   });
 
@@ -31,7 +31,7 @@ describe('Testando o endpoint GET /teams', () => {
   });
 
   it('deve retornar uma lista com dados de todos os times', async () => {
-    expect(chaiHttpResponse.body).to.deep.equal(mockTeams);
+    expect(chaiHttpResponse.body).to.deep.equal(teams);
   });
 });
 
@@ -41,8 +41,8 @@ describe('Testando o endpoint GET /teams/:id', () => {
 
   describe('requisição com parâmetro id válido', () => {
     before(async () => {
-      sinon.stub(Team, 'findByPk').resolves(mockTeam as Team);
-      chaiHttpResponse = await chai.request(app).get(`/teams/${mockTeam.id}`);
+      sinon.stub(Team, 'findByPk').resolves(team as Team);
+      chaiHttpResponse = await chai.request(app).get(`/teams/${team.id}`);
     });
 
     after(sinon.restore);
@@ -52,7 +52,7 @@ describe('Testando o endpoint GET /teams/:id', () => {
     });
 
     it('deve retornar dados de um time específico', async () => {
-      expect(chaiHttpResponse.body).to.deep.equal(mockTeam);
+      expect(chaiHttpResponse.body).to.deep.equal(team);
     });
   });
 

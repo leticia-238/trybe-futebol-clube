@@ -4,20 +4,15 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
-import { IMatchWithTeams } from '../interfaces/Match';
 import Match from '../database/models/Match';
-import {
-  mockAllMatchesDb,
-  mockAllMatchesResponse,
-  mockMatchesWithOptionsDb,
-  mockMatchesWithOptionsResponse,
-} from './mocks/matches';
-
+import { allMatchesDb, matchesOnlyInProgressDb } from './mocks/matches_mocks';
+import { IMatchWithTeamNames } from '../interfaces/IMatchWithTeamNames'
+import { allMatches, matchesOnlyInProgress } from './data/matches';
 chai.use(chaiHttp);
 
 type ResponseType = {
   status: number;
-  body: IMatchWithTeams[];
+  body: IMatchWithTeamNames[];
 };
 
 const { expect } = chai;
@@ -28,7 +23,7 @@ describe('Testando o endpoint GET /matches', () => {
   
   describe('requisição sem nenhuma query', () => {
     before(async () => {
-      sinon.stub(Match, 'findAll').resolves(mockAllMatchesDb as unknown as Match[]);
+      sinon.stub(Match, 'findAll').resolves(allMatchesDb as unknown as Match[]);
       chaiHttpResponse = await chai.request(app).get('/matches');
     });
 
@@ -39,13 +34,13 @@ describe('Testando o endpoint GET /matches', () => {
     });
 
     it('deve retornar uma lista com dados de todas as partidas', async () => {
-      expect(chaiHttpResponse.body).to.deep.equal(mockAllMatchesResponse);
+      expect(chaiHttpResponse.body).to.deep.equal(allMatches);
     });
   });
 
   describe('requisição com o parâmetro da query recebendo um valor válido', () => {
     before(async () => {
-      sinon.stub(Match, 'findAll').resolves(mockMatchesWithOptionsDb as unknown as Match[]);
+      sinon.stub(Match, 'findAll').resolves(matchesOnlyInProgressDb as unknown as Match[]);
       chaiHttpResponse = await chai
         .request(app)
         .get('/matches?inProgress=true');
@@ -58,7 +53,7 @@ describe('Testando o endpoint GET /matches', () => {
     });
 
     it('deve retornar uma lista das partidas filtradas pela query', async () => {
-      expect(chaiHttpResponse.body).to.deep.equal(mockMatchesWithOptionsResponse);
+      expect(chaiHttpResponse.body).to.deep.equal(matchesOnlyInProgress);
     });
   });
 

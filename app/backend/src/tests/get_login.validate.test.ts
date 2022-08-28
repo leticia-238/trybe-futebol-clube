@@ -4,8 +4,9 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import User from '../database/models/User';
 import { app } from '../app';
-import { mockUserLogin, validEmail, validPassword } from './mocks/user';
 import httpStatus from '../helpers/httpStatus';
+import { userDb } from './mocks/user_mocks';
+import { invalidToken, validEmail, validPassword } from './data/login';
 
 chai.use(chaiHttp);
 
@@ -14,8 +15,6 @@ type ResponseType = {
   body: { token: string };
 };
 
-const invalidToken = '123&$*%34yuft$#56765';
-
 const { expect } = chai;
 
 describe('Testando o endpoint GET /login/validate', () => {
@@ -23,7 +22,7 @@ describe('Testando o endpoint GET /login/validate', () => {
   
   describe('requisição com token válido', () => {
     before(async () => {
-      sinon.stub(User, 'findOne').resolves(mockUserLogin as User);
+      sinon.stub(User, 'findOne').resolves(userDb as User);
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')

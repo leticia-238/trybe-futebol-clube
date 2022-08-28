@@ -1,12 +1,12 @@
-export const mockTeams = [
+import { ITeam } from '../../interfaces/ITeam'
+
+export const teams: ITeam[] = [
   { id: 1, teamName: 'Avaí/Kindermann' },
   { id: 2, teamName: 'Bahia' },
   { id: 3, teamName: 'Botafogo' },
 ];
 
-const id = 5;
-
-export const mockTeam = {
-  id,
+export const team: ITeam = {
+  id: 5,
   teamName: 'Cruzeiro',
 };
