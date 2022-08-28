@@ -12,7 +12,7 @@ class AuthService {
   static verifyToken = (token: string) => {
     let data;
     jwt.verify(token, secret, (err, decoded) => {
-      if (err) throw new UnauthorizedError('invalid token');
+      if (err) throw new UnauthorizedError('Token must be a valid token');
       data = decoded;
     });
     return data;
