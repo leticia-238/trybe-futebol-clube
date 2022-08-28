@@ -11,7 +11,8 @@ class UserController {
   signin: RequestHandler = async (req, res): Promise<void> => {
     const payload = req.body;
     validateSigninPayload(payload);
-    const user = await this.service.validateRegisteredUser(payload);
+    const user = await this.service
+      .validateRegisteredUser(payload.email, payload.password);
     const token = AuthService.generateToken(user);
     res.status(200).json({ token });
   };

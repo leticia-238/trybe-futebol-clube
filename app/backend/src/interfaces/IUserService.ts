@@ -1,11 +1,12 @@
 import { IUserWithPassword } from './IUserWithPassword';
 
-export type GetterUser<T> = (user: T) => Promise<IUserWithPassword>;
-
 export type IUserLogin = Pick<IUserWithPassword, 'email' | 'password'>;
 
+export type GetUser = (email: string, password: string) => Promise<IUserWithPassword>;
+
 export interface IUserService {
-  getOne: GetterUser<Partial<IUserWithPassword>>,
-  validateRegisteredUser: GetterUser<IUserLogin>,
-  validateIfExists(user: IUserWithPassword): IUserWithPassword
+  getByEmailAndPassword: GetUser
+  validateRegisteredUser: GetUser
+  validateIfExists(user: IUserWithPassword): void
+  validateDbPassword(password: string, dbHashPassword: string): void
 }
