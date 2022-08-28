@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import { RoleType } from '../../interfaces/User';
+import { RoleType } from '../../interfaces/IUser';
 import db from '.';
 
 class User extends Model {
