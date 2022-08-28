@@ -61,4 +61,35 @@ export const createdMatch = {
   inProgress: true,
 };
 
+export const invalidMatch1 = {
+  homeTeam: 'abc', 
+  awayTeam: 1, 
+  homeTeamGoals: 2,
+  awayTeamGoals: 2
+}
 
+export const invalidMatch2 = {
+  homeTeam: '', 
+  awayTeam: 1, 
+  homeTeamGoals: 2,
+  awayTeamGoals: 2
+}
+
+export const invalidMatch3 = {
+  homeTeam: '', 
+  homeTeamGoals: 2,
+}
+
+export const matchWithEqualTeams = {
+  homeTeam: 8, 
+  awayTeam: 8, 
+  homeTeamGoals: 2,
+  awayTeamGoals: 2
+}
+
+export const matchWithInexistentsTeams = {
+  homeTeam: 500, 
+  awayTeam: 8, 
+  homeTeamGoals: 2,
+  awayTeamGoals: 2
+}
