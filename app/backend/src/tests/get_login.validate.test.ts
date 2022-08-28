@@ -62,7 +62,7 @@ describe('Testando o endpoint GET /login/validate', () => {
     });
 
     it('deve retornar uma mensagem de erro', async () => {
-      const message = 'invalid token';
+      const message = 'Token must be a valid token';
       expect(chaiHttpResponse.body).to.deep.equal({ message });
     });
   });
