@@ -2,12 +2,13 @@ import { Request } from 'express';
 import validateRequest from '../utils/validations';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
-import { GetList, IMatchService } from '../interfaces/IMatchService';
-import { IMatchWithTeamNamesDb } from '../interfaces/IMatchWithTeamNamesDb';
-import { IMatchWithTeamNames } from '../interfaces/IMatchWithTeamNames';
-import { IMatch } from '../interfaces/IMatch';
+import { GetList, IMatchService } from '../interfaces/match_interfaces/IMatchService';
+import { IMatchWithTeamNamesDb } from '../interfaces/match_interfaces/IMatchWithTeamNamesDb';
+import { IMatchWithTeamNames } from '../interfaces/match_interfaces/IMatchWithTeamNames';
+import { IMatch } from '../interfaces/match_interfaces/IMatch';
 import NotFoundError from '../errors/NotFoundError';
 import UnauthorizedError from '../errors/UnauthorizedError';
+import { IMatchDb } from '../interfaces/match_interfaces/IMatchDb';
 
 class MatchService implements IMatchService {
   private model = Match;
@@ -44,7 +45,7 @@ class MatchService implements IMatchService {
     return result;
   };
 
-  saveMatch = async (match: IMatch): Promise<IMatch> => {
+  saveMatch = async (match: IMatch): Promise<IMatchDb> => {
     const createdMatch = await this.model.create({
       ...match, inProgress: true,
     });
@@ -59,7 +60,7 @@ class MatchService implements IMatchService {
     return { };
   };
 
-  validateBody = (req: Request) => {
+  validateBody = (req: Request): IMatch => {
     validateRequest(req, 'invalid match fields');
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
     if (homeTeam === awayTeam) {

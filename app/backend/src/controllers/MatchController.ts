@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { IMatchService } from '../interfaces/IMatchService';
+import { IMatchService } from '../interfaces/match_interfaces/IMatchService';
 
 class MatchController {
   constructor(private service: IMatchService) {}
