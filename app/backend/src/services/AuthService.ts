@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
-import validateRequest from '../utils/validations';
+import validateRequest from '../utils/validateRequest';
 import { IUserWithPassword } from '../interfaces/IUserWithPassword';
 import UnauthorizedError from '../errors/UnauthorizedError';
 

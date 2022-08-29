@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import validateRequest from '../utils/validations';
+import validateRequest from '../utils/validateRequest';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import User from '../database/models/User';
 import { compareEncryptPassword } from '../utils/encrypt';

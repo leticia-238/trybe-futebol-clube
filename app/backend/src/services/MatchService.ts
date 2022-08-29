@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import validateRequest from '../utils/validations';
+import validateRequest from '../utils/validateRequest';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import { GetList, IMatchService } from '../interfaces/match_interfaces/IMatchService';

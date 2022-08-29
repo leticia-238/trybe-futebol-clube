@@ -3,7 +3,7 @@ import NotFoundError from '../errors/NotFoundError';
 import Team from '../database/models/Team';
 import { ITeamService } from '../interfaces/ITeamService';
 import { ITeam } from '../interfaces/ITeam';
-import validateRequest from '../utils/validations';
+import validateRequest from '../utils/validateRequest';
 
 class TeamService implements ITeamService {
   private model = Team;
