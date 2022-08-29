@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { IMatch } from './IMatch';
 import { IMatchWithTeamNames } from './IMatchWithTeamNames';
 import { IMatchWithTeamNamesDb } from './IMatchWithTeamNamesDb';
@@ -13,7 +14,9 @@ export type OptionsType = {
 };
 
 export interface IMatchService {
-  getAllWithTeamNames: GetList<IMatchWithTeamNamesDb>,
+  getAllWithTeamNames: GetList<IMatchWithTeamNamesDb>
   getFormatedMatchesData: GetList<IMatchWithTeamNames>
   saveMatch(match: IMatch): Promise<IMatch>
+  validateQuery(req: Request): Record<string, never>
+  validateBody(req: Request): IMatch
 }
