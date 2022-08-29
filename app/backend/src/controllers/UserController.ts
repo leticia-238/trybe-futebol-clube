@@ -1,5 +1,4 @@
 import { RequestHandler, Response } from 'express';
-import { validateSigninPayload } from '../services/validations';
 import AuthService from '../services/AuthService';
 import { RequestWithDecodedJwt } from '../interfaces/Request';
 import { IUserService } from '../interfaces/IUserService';
@@ -9,10 +8,8 @@ class UserController {
   constructor(private service: IUserService) {}
 
   signin: RequestHandler = async (req, res): Promise<void> => {
-    const payload = req.body;
-    validateSigninPayload(payload);
-    const user = await this.service
-      .validateRegisteredUser(payload.email, payload.password);
+    const { email, password } = this.service.validateBody(req);
+    const user = await this.service.validateRegisteredUser(email, password);
     const token = AuthService.generateToken(user);
     res.status(200).json({ token });
   };
