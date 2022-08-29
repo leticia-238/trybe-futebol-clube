@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateLoginBody } from '../middlewares/validationSchemas';
+import { validateAuthHeader, validateLoginBody } from '../middlewares/validationSchemas';
 import AuthMiddleware from '../middlewares/AuthMiddleware';
 import UserController from '../controllers/UserController';
 import UserService from '../services/UserService';
@@ -13,6 +13,7 @@ loginRouter.post('/', validateLoginBody, controller.signin);
 
 loginRouter.get(
   '/validate',
+  validateAuthHeader,
   AuthMiddleware.authenticate,
   controller.getUserRole,
 );

@@ -1,4 +1,6 @@
 import * as jwt from 'jsonwebtoken';
+import { Request } from 'express';
+import validateRequest from '../utils/validations';
 import { IUserWithPassword } from '../interfaces/IUserWithPassword';
 import UnauthorizedError from '../errors/UnauthorizedError';
 
@@ -16,6 +18,12 @@ class AuthService {
       data = decoded;
     });
     return data;
+  };
+
+  static validateAuthHeader = (req: Request) => {
+    validateRequest(req);
+    const { authorization } = req.headers;
+    return authorization;
   };
 }
 
