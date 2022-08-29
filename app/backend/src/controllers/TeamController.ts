@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
 import { ITeamService } from '../interfaces/ITeamService';
-import { validateIdParam } from '../services/validations';
 
 class TeamController {
   constructor(private service: ITeamService) {}
@@ -12,7 +11,7 @@ class TeamController {
 
   getTeamById: RequestHandler = async (req, res): Promise<void> => {
     const { id } = req.params;
-    validateIdParam(id);
+    this.service.validateIdParam(req);
     const team = await this.service.getById(id);
     res.status(200).json(team);
   };

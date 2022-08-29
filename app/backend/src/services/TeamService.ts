@@ -1,7 +1,9 @@
+import { Request } from 'express';
 import NotFoundError from '../errors/NotFoundError';
 import Team from '../database/models/Team';
 import { ITeamService } from '../interfaces/ITeamService';
 import { ITeam } from '../interfaces/ITeam';
+import validateRequest from '../utils/validations';
 
 class TeamService implements ITeamService {
   private model = Team;
@@ -18,8 +20,12 @@ class TeamService implements ITeamService {
   };
 
   validateIfExists = (team: ITeam): ITeam => {
-    if (!team) throw new NotFoundError('Not Found');
+    if (!team) throw new NotFoundError('team not found');
     return team;
+  };
+
+  validateIdParam = (req: Request) => {
+    validateRequest(req, 'invalid id parameter');
   };
 }
 
