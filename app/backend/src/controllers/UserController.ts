@@ -1,16 +1,19 @@
 import { RequestHandler, Response } from 'express';
-import AuthService from '../services/AuthService';
+import { IAuthService } from '../interfaces/IAuthService';
 import { RequestWithDecodedJwt } from '../interfaces/Request';
 import { IUserService } from '../interfaces/IUserService';
 import { IUser } from '../interfaces/IUser';
 
 class UserController {
-  constructor(private service: IUserService) {}
+  constructor(
+    private service: IUserService,
+    private authService: IAuthService,
+  ) {}
 
   signin: RequestHandler = async (req, res): Promise<void> => {
     const { email, password } = this.service.validateBody(req);
     const user = await this.service.validateRegisteredUser(email, password);
-    const token = AuthService.generateToken(user);
+    const token = this.authService.generateToken(user);
     res.status(200).json({ token });
   };
 
