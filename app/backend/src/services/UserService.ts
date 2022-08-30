@@ -1,8 +1,8 @@
 import { Request } from 'express';
-import validateRequest from '../utils/validateRequest';
+import validateRequest from './utils/validateRequest';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import User from '../database/models/User';
-import { compareEncryptPassword } from '../utils/encrypt';
+import { compareEncryptPassword } from './utils/encrypt';
 import { IUserLogin, IUserService } from '../interfaces/user_interfaces/IUserService';
 import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
 
