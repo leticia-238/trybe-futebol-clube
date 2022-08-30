@@ -3,8 +3,8 @@ import validateRequest from '../utils/validateRequest';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import User from '../database/models/User';
 import { compareEncryptPassword } from '../utils/encrypt';
-import { IUserLogin, IUserService } from '../interfaces/IUserService';
-import { IUserWithPassword } from '../interfaces/IUserWithPassword';
+import { IUserLogin, IUserService } from '../interfaces/user_interfaces/IUserService';
+import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
 
 class UserService implements IUserService {
   private model = User;

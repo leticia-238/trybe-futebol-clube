@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import NotFoundError from '../errors/NotFoundError';
 import Team from '../database/models/Team';
-import { ITeamService } from '../interfaces/ITeamService';
-import { ITeam } from '../interfaces/ITeam';
+import { ITeamService } from '../interfaces/team_interfaces/ITeamService';
+import { ITeam } from '../interfaces/team_interfaces/ITeam';
 import validateRequest from '../utils/validateRequest';
 
 class TeamService implements ITeamService {

@@ -2,7 +2,7 @@ import { Request } from 'express';
 import validateRequest from '../utils/validateRequest';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
-import { GetList, IMatchService } from '../interfaces/match_interfaces/IMatchService';
+import { GetList, IMatchService, OptionsMatch } from '../interfaces/match_interfaces/IMatchService';
 import { IMatchWithTeamNamesDb } from '../interfaces/match_interfaces/IMatchWithTeamNamesDb';
 import { IMatchWithTeamNames } from '../interfaces/match_interfaces/IMatchWithTeamNames';
 import { IMatch } from '../interfaces/match_interfaces/IMatch';
@@ -52,12 +52,12 @@ class MatchService implements IMatchService {
     return createdMatch;
   };
 
-  validateQuery = (req: Request): Record<string, never> => {
+  validateQuery = (req: Request) => {
     validateRequest(req);
-    if (Object.keys(req.query).length !== 0) {
+    if (Object.keys(req.query).length > 1) {
       throw new NotFoundError('the server has not found anything matching the request-URI');
     }
-    return { };
+    return req.query as OptionsMatch;
   };
 
   validateBody = (req: Request): IMatch => {

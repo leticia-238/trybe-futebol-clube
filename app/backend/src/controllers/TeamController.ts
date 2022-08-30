@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { ITeamService } from '../interfaces/ITeamService';
+import { ITeamService } from '../interfaces/team_interfaces/ITeamService';
 
 class TeamController {
   constructor(private service: ITeamService) {}
