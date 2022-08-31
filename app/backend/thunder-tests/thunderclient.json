@@ -355,5 +355,19 @@
       "type": "bearer"
     },
     "tests": []
+  },
+  {
+    "_id": "52e2e95a-ec6c-48d2-89f8-677c3f3ecffc",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "7fe36440-58fd-4439-85f7-5821592e2ed4",
+    "name": "update match in progress",
+    "url": "localhost:3001/matches/1/finish",
+    "method": "PATCH",
+    "sortNum": 155000,
+    "created": "2022-08-31T22:49:32.459Z",
+    "modified": "2022-08-31T22:50:22.275Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
