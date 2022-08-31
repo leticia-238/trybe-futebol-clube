@@ -1,4 +1,6 @@
 import { Request } from 'express';
+import { ITeam } from '../interfaces/team_interfaces/ITeam';
+import NotFoundError from '../errors/NotFoundError';
 import validateRequest from './utils/validateRequest';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
@@ -6,9 +8,9 @@ import { GetList, IMatchService, OptionsMatch } from '../interfaces/match_interf
 import { IMatchWithTeamNamesDb } from '../interfaces/match_interfaces/IMatchWithTeamNamesDb';
 import { IMatchWithTeamNames } from '../interfaces/match_interfaces/IMatchWithTeamNames';
 import { IMatch } from '../interfaces/match_interfaces/IMatch';
-import NotFoundError from '../errors/NotFoundError';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import { IMatchDb } from '../interfaces/match_interfaces/IMatchDb';
+import ValidationError from '../errors/ValidationError';
 
 class MatchService implements IMatchService {
   private model = Match;
@@ -52,16 +54,23 @@ class MatchService implements IMatchService {
     return createdMatch;
   };
 
+  validateIfTeamsExists = (homeTeam: ITeam, awayTeam: ITeam): void => {
+    if (!homeTeam || !awayTeam) throw new NotFoundError('There is no team with such id!');
+  };
+
   validateQuery = (req: Request) => {
-    validateRequest(req);
-    if (Object.keys(req.query).length > 1) {
-      throw new NotFoundError('the server has not found anything matching the request-URI');
+    const errors = validateRequest(req);
+    if ('inProgress' in req.query && !errors.isEmpty()) {
+      throw new ValidationError(`${errors.array()}`);
     }
     return req.query as OptionsMatch;
   };
 
   validateBody = (req: Request): IMatch => {
-    validateRequest(req, 'invalid match fields');
+    const errors = validateRequest(req);
+    if (!errors.isEmpty()) {
+      throw new ValidationError('invalid match fields');
+    }
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
     if (homeTeam === awayTeam) {
       throw new UnauthorizedError('It is not possible to create a match with two equal teams');

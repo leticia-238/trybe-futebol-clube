@@ -5,6 +5,7 @@ import User from '../database/models/User';
 import { compareEncryptPassword } from './utils/encrypt';
 import { IUserLogin, IUserService } from '../interfaces/user_interfaces/IUserService';
 import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
+import ValidationError from '../errors/ValidationError';
 
 class UserService implements IUserService {
   private model = User;
@@ -36,14 +37,13 @@ class UserService implements IUserService {
   };
 
   validateBody = (req: Request): IUserLogin => {
-    try {
-      validateRequest(req);
-    } catch (error) {
-      const err = error as Error;
-      if (err.message === this.unauthorizedErrorMsg) {
-        throw new UnauthorizedError(err.message);
+    const errors = validateRequest(req);
+    const errorMessage = `${errors.array()}`;
+    if (!errors.isEmpty()) {
+      if (errorMessage === this.unauthorizedErrorMsg) {
+        throw new UnauthorizedError(errorMessage);
       }
-      throw error;
+      throw new ValidationError(errorMessage);
     }
     const { email, password } = req.body;
     return { email, password };

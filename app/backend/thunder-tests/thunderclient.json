@@ -165,11 +165,11 @@
     "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
     "containerId": "de8c2e4d-ef67-495a-bf58-6cb6bae55503",
     "name": "team by invalid id ",
-    "url": "localhost:3001/teams/89",
+    "url": "localhost:3001/teams/abc",
     "method": "GET",
     "sortNum": 65000,
     "created": "2022-08-25T20:16:30.132Z",
-    "modified": "2022-08-25T20:53:07.213Z",
+    "modified": "2022-08-30T16:59:26.533Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -258,6 +258,87 @@
     "sortNum": 115000,
     "created": "2022-08-26T15:56:28.904Z",
     "modified": "2022-08-26T23:53:19.251Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkeGkuSHhrMWN6QU8wblpSLi5CMzkzdTEwYUVEMFJRMU4zUEFFWFE3SHh0TGpLUEVaQnUuUFciLCJpYXQiOjE2NjE1NTc5NzF9.j3sSSu_DFlKuY8hxOTZZ_vgsJmtss1bPSWJPqPrTNcE"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"homeTeam\": 16, \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer"
+    },
+    "tests": []
+  },
+  {
+    "_id": "6f6685db-1050-481b-9ce4-7d8b7caddeea",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "152c0401-ecd3-4fec-82a2-fa9748f545af",
+    "name": "invalid match ",
+    "url": "localhost:3001/matches",
+    "method": "POST",
+    "sortNum": 125000,
+    "created": "2022-08-30T18:19:15.296Z",
+    "modified": "2022-08-30T23:21:56.165Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkeGkuSHhrMWN6QU8wblpSLi5CMzkzdTEwYUVEMFJRMU4zUEFFWFE3SHh0TGpLUEVaQnUuUFciLCJpYXQiOjE2NjE1NTc5NzF9.j3sSSu_DFlKuY8hxOTZZ_vgsJmtss1bPSWJPqPrTNcE"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"homeTeam\": \"\", \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer"
+    },
+    "tests": []
+  },
+  {
+    "_id": "4e9e64c1-5de9-47b5-9c30-2e6879185e32",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "152c0401-ecd3-4fec-82a2-fa9748f545af",
+    "name": "match  with equal teams",
+    "url": "localhost:3001/matches",
+    "method": "POST",
+    "sortNum": 135000,
+    "created": "2022-08-30T18:19:33.974Z",
+    "modified": "2022-08-30T18:19:33.974Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkeGkuSHhrMWN6QU8wblpSLi5CMzkzdTEwYUVEMFJRMU4zUEFFWFE3SHh0TGpLUEVaQnUuUFciLCJpYXQiOjE2NjE1NTc5NzF9.j3sSSu_DFlKuY8hxOTZZ_vgsJmtss1bPSWJPqPrTNcE"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"homeTeam\": 16, \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer"
+    },
+    "tests": []
+  },
+  {
+    "_id": "361a3455-2e12-4110-ad64-b2e54c2b4737",
+    "colId": "639d5d18-fc44-4c9b-a12b-fa2d4b913751",
+    "containerId": "152c0401-ecd3-4fec-82a2-fa9748f545af",
+    "name": "match  with inexistent teams",
+    "url": "localhost:3001/matches",
+    "method": "POST",
+    "sortNum": 145000,
+    "created": "2022-08-30T18:20:03.277Z",
+    "modified": "2022-08-30T18:20:03.277Z",
     "headers": [
       {
         "name": "Authorization",

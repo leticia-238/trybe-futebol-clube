@@ -4,6 +4,7 @@ import Team from '../database/models/Team';
 import { ITeamService } from '../interfaces/team_interfaces/ITeamService';
 import { ITeam } from '../interfaces/team_interfaces/ITeam';
 import validateRequest from './utils/validateRequest';
+import ValidationError from '../errors/ValidationError';
 
 class TeamService implements ITeamService {
   private model = Team;
@@ -13,9 +14,8 @@ class TeamService implements ITeamService {
     return teams;
   };
 
-  getById = async (id: string): Promise<ITeam> => {
+  getById = async (id: number): Promise<ITeam> => {
     const team = await this.model.findByPk(id, { raw: true });
-    this.validateIfExists(team as ITeam);
     return team as ITeam;
   };
 
@@ -24,8 +24,12 @@ class TeamService implements ITeamService {
     return team;
   };
 
-  validateIdParam = (req: Request) => {
-    validateRequest(req, 'invalid id parameter');
+  validateIdParam = (req: Request): number => {
+    const errors = validateRequest(req);
+    if (!errors.isEmpty()) {
+      throw new ValidationError('invalid id parameter');
+    }
+    return req.params.id as unknown as number;
   };
 }
 

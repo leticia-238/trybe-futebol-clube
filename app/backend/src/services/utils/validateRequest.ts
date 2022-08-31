@@ -1,13 +1,9 @@
 import { Request } from 'express';
 import { validationResult } from 'express-validator';
-import ValidationError from '../../errors/ValidationError';
 
-const validateRequest = (req: Request, message?: string) => {
+const validateRequest = (req: Request) => {
   const errors = validationResult(req).formatWith(({ msg }) => msg);
-  if (!errors.isEmpty()) {
-    const errorMessage = message || errors.array();
-    throw new ValidationError(`${errorMessage}`);
-  }
+  return errors;
 };
 
 export default validateRequest;

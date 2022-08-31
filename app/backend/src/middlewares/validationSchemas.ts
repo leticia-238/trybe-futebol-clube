@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { checkSchema } from 'express-validator';
+import { body, checkSchema } from 'express-validator';
 
 export const validateMatchQuery = checkSchema({
   inProgress: {
@@ -10,24 +10,9 @@ export const validateMatchQuery = checkSchema({
   },
 }, ['query']);
 
-export const validateMatchBody = checkSchema({
-  homeTeam: {
-    isInt: { options: { min: 1 }, bail: true },
-    toInt: true,
-  },
-  awayTeam: {
-    isInt: { options: { min: 1 }, bail: true },
-    toInt: true,
-  },
-  homeTeamGoals: {
-    isInt: { options: { min: 0 }, bail: true },
-    toInt: true,
-  },
-  awayTeamGoals: {
-    isInt: { options: { min: 0 }, bail: true },
-    toInt: true,
-  },
-}, ['body']);
+export const validateMatchBody = body([
+  'homeTeam', 'awayTeam', 'homeTeamGoals', 'awayTeamGoals',
+], 'invalid match fields').exists().isInt().toInt();
 
 export const validateIdParam = checkSchema({
   id: {

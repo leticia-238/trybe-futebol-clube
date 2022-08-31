@@ -4,10 +4,13 @@ import validateRequest from './utils/validateRequest';
 import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import { IAuthService } from '../interfaces/IAuthService';
+import ValidationError from '../errors/ValidationError';
 
 const secret = process.env.JWT_SECRET || 'jwt_secret';
 
 class AuthService implements IAuthService {
+  private unauthorizedErrorMsg = 'Token must be a valid token';
+
   generateToken = (payload: IUserWithPassword): string => (
     jwt.sign(payload, secret)
   );
@@ -15,14 +18,21 @@ class AuthService implements IAuthService {
   verifyToken = (token: string) => {
     let data;
     jwt.verify(token, secret, (err, decoded) => {
-      if (err) throw new UnauthorizedError('Token must be a valid token');
+      if (err) throw new UnauthorizedError(this.unauthorizedErrorMsg);
       data = decoded;
     });
     return data as unknown as IUserWithPassword;
   };
 
   validateAuthHeader = (req: Request) => {
-    validateRequest(req);
+    const errors = validateRequest(req);
+    const errorMessage = `${errors.array()}`;
+    if (!errors.isEmpty()) {
+      if (errorMessage === this.unauthorizedErrorMsg) {
+        throw new UnauthorizedError(errorMessage);
+      }
+      throw new ValidationError(errorMessage);
+    }
     const { authorization } = req.headers;
     return authorization as string;
   };

@@ -17,6 +17,6 @@ const path = '/';
 
 matchesRouter.get(path, validateMatchQuery, controller.getMatches);
 
-matchesRouter.post(path, validateMatchBody, authController.authenticate, controller.saveMatch);
+matchesRouter.post(path, authController.authenticate, validateMatchBody, controller.saveMatch);
 
 export default matchesRouter;
