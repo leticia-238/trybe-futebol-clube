@@ -54,6 +54,12 @@ class MatchService implements IMatchService {
     return createdMatch;
   };
 
+  updateMatchProgress = async (id: string) => {
+    await Match.update({ inProgress: 0 }, {
+      where: { id },
+    });
+  };
+
   validateIfTeamsExists = (homeTeam: ITeam, awayTeam: ITeam): void => {
     if (!homeTeam || !awayTeam) throw new NotFoundError('There is no team with such id!');
   };

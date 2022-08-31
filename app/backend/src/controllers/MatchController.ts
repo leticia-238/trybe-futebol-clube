@@ -20,6 +20,12 @@ class MatchController {
     const createdMatch = await this.service.saveMatch(validMatch);
     res.status(201).json(createdMatch);
   };
+
+  updateMatchProgress: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = req.params;
+    this.service.updateMatchProgress(id);
+    res.status(200).json({ message: 'Finished' });
+  };
 }
 
 export default MatchController;

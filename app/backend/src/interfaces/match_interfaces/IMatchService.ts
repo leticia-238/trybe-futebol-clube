@@ -15,6 +15,7 @@ export interface IMatchService {
   getAllWithTeamNames: GetList<IMatchWithTeamNamesDb>
   getFormatedMatchesData: GetList<IMatchWithTeamNames>
   saveMatch(match: IMatch): Promise<IMatchDb>
+  updateMatchProgress(id: string): Promise<void>
   validateIfTeamsExists(homeTeam: ITeam, awayTeam: ITeam): void
   validateQuery(req: Request): OptionsMatch
   validateBody(req: Request): IMatch
