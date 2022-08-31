@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { ITeam } from '../team_interfaces/ITeam';
 import { IMatch } from './IMatch';
 import { IMatchDb } from './IMatchDb';
 import { IMatchWithTeamNames } from './IMatchWithTeamNames';
@@ -14,6 +15,7 @@ export interface IMatchService {
   getAllWithTeamNames: GetList<IMatchWithTeamNamesDb>
   getFormatedMatchesData: GetList<IMatchWithTeamNames>
   saveMatch(match: IMatch): Promise<IMatchDb>
+  validateIfTeamsExists(homeTeam: ITeam, awayTeam: ITeam): void
   validateQuery(req: Request): OptionsMatch
   validateBody(req: Request): IMatch
 }

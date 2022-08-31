@@ -10,9 +10,9 @@ class TeamController {
   };
 
   getTeamById: RequestHandler = async (req, res): Promise<void> => {
-    const { id } = req.params;
-    this.service.validateIdParam(req);
+    const id = this.service.validateIdParam(req);
     const team = await this.service.getById(id);
+    this.service.validateIfExists(team);
     res.status(200).json(team);
   };
 }
