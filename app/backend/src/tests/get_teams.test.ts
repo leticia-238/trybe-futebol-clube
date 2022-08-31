@@ -6,7 +6,7 @@ import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
 import Team from '../database/models/Team';
 import { team, teams } from './mocks/teams_mocks';
-import { ITeam } from '../interfaces/ITeam';
+import { ITeam } from '../interfaces/team_interfaces/ITeam'
 chai.use(chaiHttp);
 
 type ResponseType = {
@@ -37,7 +37,6 @@ describe('Testando o endpoint GET /teams', () => {
 
 describe('Testando o endpoint GET /teams/:id', () => {
   let chaiHttpResponse: ResponseType;
-  let chaiHttpResponses: ResponseType[];
 
   describe('requisição com parâmetro id válido', () => {
     before(async () => {
@@ -59,25 +58,36 @@ describe('Testando o endpoint GET /teams/:id', () => {
   describe('requisição com parâmetro id inválido', () => {
     before(async () => {
       sinon.stub(Team, 'findByPk').resolves();
-      const requester = chai.request(app).keepOpen();
-      chaiHttpResponses = await Promise.all([
-        requester.get('/teams/9'),
-        requester.get('/teams/abc'),
-      ]);
-      requester.close();
+      chaiHttpResponse = await chai.request(app).get('/teams/abc')
+    });
+
+    after(sinon.restore);
+
+    it('deve retornar um status 400', async () => {
+      expect(chaiHttpResponse).to.have.status(httpStatus.badRequest);
+    });
+
+    it('deve retornar uma mensagem de erro', async () => {
+      const message = 'invalid id parameter';
+      expect(chaiHttpResponse.body).to.deep.equal({ message });
+    });
+  });
+  
+  describe('requisição com parâmetro id inexistent no db', () => {
+    before(async () => {
+      sinon.stub(Team, 'findByPk').resolves();
+      chaiHttpResponse = await chai.request(app).get('/teams/89')
     });
 
     after(sinon.restore);
 
     it('deve retornar um status 404', async () => {
-      expect(chaiHttpResponses[0]).to.have.status(httpStatus.notFound);
-      expect(chaiHttpResponses[1]).to.have.status(httpStatus.notFound);
+      expect(chaiHttpResponse).to.have.status(httpStatus.notFound);
     });
 
     it('deve retornar uma mensagem de erro', async () => {
-      const message = 'Not Found';
-      expect(chaiHttpResponses[0].body).to.deep.equal({ message });
-      expect(chaiHttpResponses[1].body).to.deep.equal({ message });
+      const message = 'team not found';
+      expect(chaiHttpResponse.body).to.deep.equal({ message });
     });
   });
 });

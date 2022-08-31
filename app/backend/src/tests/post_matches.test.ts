@@ -6,10 +6,13 @@ import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
 import Match from '../database/models/Match';
 import { createdMatchDb } from './mocks/matches_mocks';
-import { IMatch } from '../interfaces/IMatch';
-import { createdMatch, invalidMatch1, invalidMatch2, invalidMatch3, matchWithEqualTeams, matchWithInexistentsTeams, validMatch } from './data/matches';
-import AuthService from '../services/AuthService';
-import { userToken } from './mocks/user_mocks';
+import { IMatch } from '../interfaces/match_interfaces/IMatch';
+import { 
+  createdMatch, invalidMatch1, invalidMatch2, invalidMatch3, 
+  matchWithEqualTeams, matchWithInexistentsTeams, validMatch 
+} from './data/matches';
+import { SinonStub } from 'sinon';
+import * as jwt from 'jsonwebtoken';
 
 chai.use(chaiHttp);
 
@@ -27,7 +30,8 @@ describe('Testando o endpoint POST /matches', () => {
   describe('requisição com partida válida', () => {
     before(async () => {
       sinon.stub(Match, 'create').resolves(createdMatchDb as Match);
-      sinon.stub(AuthService, "generateToken").returns(userToken);
+      const stub = sinon.stub(jwt, 'verify') as SinonStub
+      stub.returns({})
       chaiHttpResponse = await chai.request(app)
         .post('/matches')
         .send(validMatch)
@@ -36,7 +40,7 @@ describe('Testando o endpoint POST /matches', () => {
     after(sinon.restore);
 
     it('deve retornar um status 201', async () => {
-      expect(chaiHttpResponse).to.have.status(httpStatus.ok);
+      expect(chaiHttpResponse).to.have.status(httpStatus.created);
     });
 
     it('deve retornar os dados da partida criada', async () => {
@@ -47,7 +51,8 @@ describe('Testando o endpoint POST /matches', () => {
   describe('requisição com os dados da partida inválidos', () => {
     before(async () => {
       sinon.stub(Match, 'create').rejects();
-      sinon.stub(AuthService, "generateToken").returns(userToken);
+      const stub = sinon.stub(jwt, 'verify') as SinonStub
+      stub.returns({})
       const requester = chai.request(app).keepOpen()
       chaiHttpResponses = await Promise.all([
         requester.post('/matches').send(invalidMatch1),
@@ -66,7 +71,7 @@ describe('Testando o endpoint POST /matches', () => {
     });
 
     it('deve retornar uma mensagem de erro', async () => {
-      const message = 'parâmetro da query com valor inválido';
+      const message = 'invalid match fields';
       expect(chaiHttpResponses[0].body).to.deep.equal({ message });
       expect(chaiHttpResponses[1].body).to.deep.equal({ message });
       expect(chaiHttpResponses[2].body).to.deep.equal({ message });
@@ -76,7 +81,8 @@ describe('Testando o endpoint POST /matches', () => {
   describe('requisição com times iguais na mesma partida', () => {
     before(async () => {
       sinon.stub(Match, 'create').rejects();
-      sinon.stub(AuthService, "generateToken").returns(userToken);
+      const stub = sinon.stub(jwt, 'verify') as SinonStub
+      stub.returns({})
       chaiHttpResponse = await chai.request(app)
         .post('/matches')
         .send(matchWithEqualTeams)
@@ -97,7 +103,8 @@ describe('Testando o endpoint POST /matches', () => {
   describe('requisição com partida com times que não existem', () => {
     before(async () => {
       sinon.stub(Match, 'create').rejects();
-      sinon.stub(AuthService, "generateToken").returns(userToken);
+      const stub = sinon.stub(jwt, 'verify') as SinonStub
+      stub.returns({})
       chaiHttpResponse = await chai.request(app)
       .post('/matches')
       .send(matchWithInexistentsTeams)

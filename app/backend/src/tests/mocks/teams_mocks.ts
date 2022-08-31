@@ -1,4 +1,4 @@
-import { ITeam } from '../../interfaces/ITeam'
+import { ITeam } from '../../interfaces/team_interfaces/ITeam'
 
 export const teams: ITeam[] = [
   { id: 1, teamName: 'Avaí/Kindermann' },

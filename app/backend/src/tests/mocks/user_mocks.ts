@@ -1,5 +1,5 @@
-import { IUserWithPassword } from '../../interfaces/IUserWithPassword';
-import { encryptPassword } from '../../utils/encrypt';
+import { IUserWithPassword } from '../../interfaces/user_interfaces/IUserWithPassword';
+import { encryptPassword } from '../../services/utils/encrypt';
 import { validEmail, validPassword, validRole } from '../data/login';
 
 export const hashPassword = encryptPassword(validPassword);

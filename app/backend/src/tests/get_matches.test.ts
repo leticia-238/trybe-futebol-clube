@@ -6,7 +6,7 @@ import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
 import Match from '../database/models/Match';
 import { allMatchesDb, matchesOnlyInProgressDb } from './mocks/matches_mocks';
-import { IMatchWithTeamNames } from '../interfaces/IMatchWithTeamNames'
+import { IMatchWithTeamNames } from '../interfaces/match_interfaces/IMatchWithTeamNames'
 import { allMatches, matchesOnlyInProgress } from './data/matches';
 chai.use(chaiHttp);
 
@@ -19,7 +19,6 @@ const { expect } = chai;
 
 describe('Testando o endpoint GET /matches', () => {
   let chaiHttpResponse: ResponseType;
-  let chaiHttpResponses: ResponseType[];
   
   describe('requisição sem nenhuma query', () => {
     before(async () => {
@@ -70,36 +69,8 @@ describe('Testando o endpoint GET /matches', () => {
     });
 
     it('deve retornar uma mensagem de erro', async () => {
-      const message = 'parâmetro da query com valor inválido';
+      const message = 'invalid value for query string parameter "inProgress"';
       expect(chaiHttpResponse.body).to.deep.equal({ message });
-    });
-  });
-
-  describe('requisição com o parâmetro da query inválido', () => {
-    before(async () => {
-      sinon.stub(Match, 'findAll').rejects();
-      const requester = chai.request(app).keepOpen();
-      chaiHttpResponses = await Promise.all([
-        requester.get('/matches?invalidParam'),
-        requester.get('/matches?invalidParam=true'),
-        requester.get('/matches?invalidParam=oi&abc=8'),
-      ]);
-      requester.close();
-    });
-
-    after(sinon.restore);
-
-    it('deve retornar um status 400', async () => {
-      expect(chaiHttpResponses[0]).to.have.status(httpStatus.badRequest);
-      expect(chaiHttpResponses[1]).to.have.status(httpStatus.badRequest);
-      expect(chaiHttpResponses[2]).to.have.status(httpStatus.badRequest);
-    });
-
-    it('deve retornar uma mensagem de erro', async () => {
-      const message = 'query com parâmetros inválidos';
-      expect(chaiHttpResponses[0].body).to.deep.equal({ message });
-      expect(chaiHttpResponses[1].body).to.deep.equal({ message });
-      expect(chaiHttpResponses[2].body).to.deep.equal({ message });
     });
   });
 });

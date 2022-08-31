@@ -4,7 +4,6 @@ import * as chai from "chai";
 import chaiHttp = require("chai-http");
 import User from "../database/models/User";
 import { app } from "../app";
-import AuthService from "../services/AuthService";
 import httpStatus from "../helpers/httpStatus";
 import {
   inexistentEmail,
@@ -15,6 +14,8 @@ import {
   validPassword,
 } from "./data/login";
 import { userDb, userToken } from "./mocks/user_mocks";
+import * as jwt from 'jsonwebtoken';
+import { SinonStub } from 'sinon';
 
 chai.use(chaiHttp);
 
@@ -34,7 +35,8 @@ describe("Testando o endpoint POST /login", () => {
   describe("requisição com email e senha válidos", () => {
     before(async () => {
       sinon.stub(User, "findOne").resolves(userDb as User);
-      sinon.stub(AuthService, "generateToken").returns(userToken);
+      const stub = sinon.stub(jwt, 'sign') as SinonStub
+      stub.returns(userToken)
       chaiHttpResponse = await chai
         .request(app)
         .post("/login")
