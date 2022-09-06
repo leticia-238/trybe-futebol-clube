@@ -1,24 +1,13 @@
 import { Router } from 'express';
-// import { query, oneOf } from 'express-validator';
-import MatchService from '../services/MatchService';
-import MatchController from '../controllers/MatchController';
+import { authController, matchController } from '../controllers';
 import { validateMatchBody, validateMatchQuery } from '../middlewares/validationSchemas';
-import AuthController from '../controllers/AuthController';
-import AuthService from '../services/AuthService';
 
 const matchesRouter = Router();
 
-const authService = new AuthService();
-const authController = new AuthController(authService);
-const service = new MatchService();
-const controller = new MatchController(service);
+matchesRouter.get('/', validateMatchQuery, matchController.getMatches);
 
-const path = '/';
+matchesRouter.patch('/:id/finish', matchController.updateMatchProgress);
 
-matchesRouter.get(path, validateMatchQuery, controller.getMatches);
-
-matchesRouter.patch(`${path}:id/finish`, controller.updateMatchProgress);
-
-matchesRouter.post(path, authController.authenticate, validateMatchBody, controller.saveMatch);
+matchesRouter.post('/', authController.authenticate, validateMatchBody, matchController.saveMatch);
 
 export default matchesRouter;

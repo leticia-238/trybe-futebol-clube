@@ -1,9 +1,7 @@
 import { Router } from 'express';
-import LeaderboardController from '../controllers/LeaderboardController';
+import { leaderboardController } from '../controllers';
 
 const leaderboardRouter = Router();
-
-const leaderboardController = new LeaderboardController();
 
 leaderboardRouter.get('/', leaderboardController.getAllTeamsRankings);
 

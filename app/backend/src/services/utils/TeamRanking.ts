@@ -1,16 +1,4 @@
-export interface ITeamRanking{
-  name: string,
-  totalPoints: number,
-  totalGames: number,
-  totalVictories: number,
-  totalDraws: number,
-  totalLosses: number,
-  goalsFavor: number,
-  goalsOwn: number,
-  goalsBalance: number,
-  efficiency: number,
-  setRankingValues(goalsFavor: number, goalsOwn: number): void
-}
+import { ITeamRanking } from '../../interfaces/ITeamRanking';
 
 class TeamRanking implements ITeamRanking {
   totalPoints = 0;

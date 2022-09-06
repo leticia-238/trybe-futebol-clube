@@ -1,10 +1,7 @@
 import 'express-async-errors';
 import * as express from 'express';
 import errorHandler from './middlewares/errorHandler';
-import loginRouter from './routes/loginRouter';
-import teamsRouter from './routes/teamsRouter';
-import matchesRouter from './routes/matchesRouter';
-import leaderboardRouter from './routes/leaderboardRouter';
+import { leaderboardRouter, loginRouter, matchesRouter, teamsRouter } from './routes';
 
 class App {
   public app: express.Express;
