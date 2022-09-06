@@ -1,46 +1,40 @@
 import { Request } from 'express';
 import validateRequest from './utils/validateRequest';
-import UnauthorizedError from '../errors/UnauthorizedError';
-import User from '../database/models/User';
 import { compareEncryptPassword } from './utils/encrypt';
-import { IUserLogin, IUserService } from '../interfaces/user_interfaces/IUserService';
-import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
-import ValidationError from '../errors/ValidationError';
+import { IUserRepository, IUserService, IUserWithPassword,
+  UserLogin } from '../interfaces/user_interfaces';
+import { CustomError, UnauthorizedError, ValidationError } from '../errors';
 
 class UserService implements IUserService {
-  private model = User;
-  private unauthorizedErrorMsg = 'Incorrect email or password';
-
-  getByEmail = async (email: string) => {
-    const user = await this.model.findOne({
-      where: { email },
-      raw: true,
-    });
-    return user as IUserWithPassword;
-  };
+  constructor(private userRepository: IUserRepository) {}
 
   validateRegisteredUser = async (email: string, password: string) => {
-    const user = await this.getByEmail(email);
-    this.validateIfExists(user);
+    const user = await this.userRepository.findByEmail(email);
+    const error = new UnauthorizedError('Incorrect email or password');
+    this.validateIfExists(user, error);
     const dbHashPassword = user.password;
-    this.validateDbPassword(password, dbHashPassword);
+    this.validateDbPassword(password, dbHashPassword, error);
     return user;
   };
 
-  validateIfExists = (user: IUserWithPassword): void => {
-    if (!user) throw new UnauthorizedError(this.unauthorizedErrorMsg);
+  validateIfExists = (user: IUserWithPassword, error: CustomError): void => {
+    if (!user) throw error;
   };
 
-  validateDbPassword = (password: string, dbHashPassword: string): void => {
+  private validateDbPassword = (
+    password: string,
+    dbHashPassword: string,
+    error: CustomError,
+  ): void => {
     const isValid = compareEncryptPassword(password, dbHashPassword);
-    if (!isValid) throw new UnauthorizedError(this.unauthorizedErrorMsg);
+    if (!isValid) throw error;
   };
 
-  validateBody = (req: Request): IUserLogin => {
+  validateLoginBody = (req: Request): UserLogin => {
     const errors = validateRequest(req);
     const errorMessage = `${errors.array()}`;
     if (!errors.isEmpty()) {
-      if (errorMessage === this.unauthorizedErrorMsg) {
+      if (errorMessage === 'Incorrect email or password') {
         throw new UnauthorizedError(errorMessage);
       }
       throw new ValidationError(errorMessage);

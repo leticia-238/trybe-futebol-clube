@@ -6,3 +6,9 @@ export interface IUser {
   role: RoleType,
   email: string,
 }
+
+export interface IUserWithPassword extends IUser {
+  password: string
+}
+
+export type UserLogin = Pick<IUserWithPassword, 'email' | 'password'>;

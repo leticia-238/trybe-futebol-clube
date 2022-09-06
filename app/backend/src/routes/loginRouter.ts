@@ -4,13 +4,13 @@ import { validateAuthHeader, validateLoginBody } from '../middlewares/validation
 
 const loginRouter = Router();
 
-loginRouter.post('/', validateLoginBody, userController.signin);
+loginRouter.post('/', validateLoginBody, userController.login);
 
 loginRouter.get(
   '/validate',
   validateAuthHeader,
   authController.authenticate,
-  userController.getUserRole,
+  userController.getAuthenticatedUserRole,
 );
 
 export default loginRouter;
