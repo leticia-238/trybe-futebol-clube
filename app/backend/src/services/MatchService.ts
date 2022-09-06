@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { Request } from 'express';
 import { ITeam } from '../interfaces/team_interfaces/ITeam';
 import NotFoundError from '../errors/NotFoundError';
@@ -12,8 +11,6 @@ import { IMatch } from '../interfaces/match_interfaces/IMatch';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import { IMatchDb } from '../interfaces/match_interfaces/IMatchDb';
 import ValidationError from '../errors/ValidationError';
-import { ILeaderBoard } from '../interfaces/ILeaderBoard';
-import LeaderBoard from './LeaderBoard';
 
 class MatchService implements IMatchService {
   private model = Match;
@@ -61,26 +58,6 @@ class MatchService implements IMatchService {
     await Match.update({ inProgress: 0 }, {
       where: { id },
     });
-  };
-
-  getTotalPointsByTeam = async () => {
-    const matches = await this.getFormatedMatchesData({ inProgress: false });
-    const result = matches.reduce((obj, match) => {
-      const {
-        homeTeam, homeTeamGoals, awayTeam, awayTeamGoals, teamHome, teamAway } = match;
-      if (homeTeam in obj) {
-        obj[homeTeam].setGameValues(homeTeamGoals, awayTeamGoals);
-      } else {
-        obj[homeTeam] = new LeaderBoard(teamHome.teamName, homeTeamGoals, awayTeamGoals);
-      }
-      if (awayTeam in obj) {
-        obj[awayTeam].setGameValues(awayTeamGoals, homeTeamGoals);
-      } else {
-        obj[awayTeam] = new LeaderBoard(teamAway.teamName, awayTeamGoals, homeTeamGoals);
-      }
-      return obj;
-    }, {} as Record<string, ILeaderBoard>);
-    return result;
   };
 
   validateIfTeamsExists = (homeTeam: ITeam, awayTeam: ITeam): void => {

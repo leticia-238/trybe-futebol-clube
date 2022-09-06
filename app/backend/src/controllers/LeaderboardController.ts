@@ -1,13 +1,23 @@
 import { RequestHandler } from 'express';
-import { IMatchService } from '../interfaces/match_interfaces/IMatchService';
+import LeaderBoardService from '../services/LeaderBoardService';
+
+const service = new LeaderBoardService();
 
 class LeaderboardController {
-  constructor(private matchesService: IMatchService) {}
+  // constructor(private leaderBoardService) {}
+  getAllTeamsRankings: RequestHandler = async (_req, res): Promise<void> => {
+    const allTeamsRankings = await service.getTeamsRankings(service.getAllTeamsRankings);
+    res.status(200).send(allTeamsRankings);
+  };
 
-  getMatches: RequestHandler = async (req, res): Promise<void> => {
-    // const matches = await this.matchesService.getFormatedMatchesData({ inProgress: true });
-    const matches = await this.matchesService.getTotalPointsByTeam();
-    res.status(200).send(matches);
+  getHomeTeamsRankings: RequestHandler = async (_req, res): Promise<void> => {
+    const homeTeamsRankings = await service.getTeamsRankings(service.getHomeTeamsRankings);
+    res.status(200).send(homeTeamsRankings);
+  };
+
+  getAwayTeamsRankings: RequestHandler = async (_req, res): Promise<void> => {
+    const awayTeamsRankings = await service.getTeamsRankings(service.getAwayTeamsRankings);
+    res.status(200).send(awayTeamsRankings);
   };
 }
 
