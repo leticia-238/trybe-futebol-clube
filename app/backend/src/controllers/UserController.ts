@@ -1,8 +1,7 @@
 import { RequestHandler, Response } from 'express';
+import { IUser, IUserService } from '../interfaces/user_interfaces';
 import { IAuthService } from '../interfaces/IAuthService';
 import { RequestWithDecodedJwt } from '../interfaces/Request';
-import { IUserService } from '../interfaces/user_interfaces/IUserService';
-import { IUser } from '../interfaces/user_interfaces/IUser';
 
 class UserController {
   constructor(

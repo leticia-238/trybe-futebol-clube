@@ -7,7 +7,7 @@ class LeaderBoardService {
   constructor(private matchesService: IMatchService) {}
 
   getTeamRankings = async (teamsRankings: TeamRankingsCallBack) => {
-    const matches = await this.matchesService.getFormatedMatchesData({ inProgress: false });
+    const matches = await this.matchesService.getAllWithTeamNames({ inProgress: false });
 
     const result = matches.reduce(teamsRankings, {} as Record<string, TeamRanking>);
     return Object.values(result).sort((a, b) => {

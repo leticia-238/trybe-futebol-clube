@@ -9,7 +9,7 @@ import { authService, leaderboardService, matchService,
 const authController = new AuthController(authService);
 const userController = new UserController(userService, authService);
 const teamController = new TeamController(teamService);
-const matchController = new MatchController(matchService, teamService);
+const matchController = new MatchController(matchService);
 const leaderboardController = new LeaderboardController(leaderboardService);
 
 export { authController, userController, teamController, matchController, leaderboardController };
