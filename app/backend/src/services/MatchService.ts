@@ -1,39 +1,18 @@
 import { Request } from 'express';
-import { ITeam } from '../interfaces/team_interfaces/ITeam';
-import NotFoundError from '../errors/NotFoundError';
+import { NotFoundError, UnauthorizedError, ValidationError } from '../errors';
+import { IMatch, IMatchDb, IMatchRepository, IMatchService,
+  OptionsMatch } from '../interfaces/match_interfaces';
+import { ITeamRepository } from '../interfaces/team_interfaces';
 import validateRequest from './utils/validateRequest';
-import Team from '../database/models/Team';
-import Match from '../database/models/Match';
-import { GetList, IMatchService, OptionsMatch } from '../interfaces/match_interfaces/IMatchService';
-import { IMatchWithTeamNamesDb } from '../interfaces/match_interfaces/IMatchWithTeamNamesDb';
-import { IMatchWithTeamNames } from '../interfaces/match_interfaces/IMatchWithTeamNames';
-import { IMatch } from '../interfaces/match_interfaces/IMatch';
-import UnauthorizedError from '../errors/UnauthorizedError';
-import { IMatchDb } from '../interfaces/match_interfaces/IMatchDb';
-import ValidationError from '../errors/ValidationError';
 
 class MatchService implements IMatchService {
-  private model = Match;
+  constructor(
+    private matchRepository: IMatchRepository,
+    private teamRepository: ITeamRepository,
+  ) {}
 
-  getAllWithTeamNames: GetList<IMatchWithTeamNamesDb> = async (options) => {
-    const matches = await this.model.findAll({
-      where: { ...options },
-      include: [{
-        model: Team,
-        as: 'teamHome',
-        attributes: ['teamName'],
-      }, {
-        model: Team,
-        as: 'teamAway',
-        attributes: ['teamName'],
-      }],
-      raw: true,
-    });
-    return matches as unknown as IMatchWithTeamNamesDb[];
-  };
-
-  getFormatedMatchesData: GetList<IMatchWithTeamNames> = async (options) => {
-    const matches = await this.getAllWithTeamNames(options);
+  getAllWithTeamNames = async (options: OptionsMatch) => {
+    const matches = await this.matchRepository.findAllWithTeamNames(options);
     const result = matches.map((match) => ({
       id: match.id,
       homeTeam: match.homeTeam,
@@ -48,19 +27,18 @@ class MatchService implements IMatchService {
   };
 
   saveMatch = async (match: IMatch): Promise<IMatchDb> => {
-    const createdMatch = await this.model.create({
-      ...match, inProgress: true,
-    });
+    this.validateIfTeamsExists(match.homeTeam, match.awayTeam);
+    const createdMatch = await this.matchRepository.create(match);
     return createdMatch;
   };
 
   updateMatchProgress = async (id: string) => {
-    await Match.update({ inProgress: 0 }, {
-      where: { id },
-    });
+    await this.matchRepository.update(id);
   };
 
-  validateIfTeamsExists = (homeTeam: ITeam, awayTeam: ITeam): void => {
+  private validateIfTeamsExists = async (homeTeamId: number, awayTeamId: number): Promise<void> => {
+    const homeTeam = await this.teamRepository.findById(homeTeamId);
+    const awayTeam = await this.teamRepository.findById(awayTeamId);
     if (!homeTeam || !awayTeam) throw new NotFoundError('There is no team with such id!');
   };
 

@@ -1,10 +1,9 @@
 import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
 import validateRequest from './utils/validateRequest';
-import { IUserWithPassword } from '../interfaces/user_interfaces/IUserWithPassword';
-import UnauthorizedError from '../errors/UnauthorizedError';
 import { IAuthService } from '../interfaces/IAuthService';
-import ValidationError from '../errors/ValidationError';
+import { IUserWithPassword } from '../interfaces/user_interfaces';
+import { UnauthorizedError, ValidationError } from '../errors';
 
 const secret = process.env.JWT_SECRET || 'jwt_secret';
 

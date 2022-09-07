@@ -4,3 +4,8 @@ export interface IMatch {
   awayTeam: number,
   awayTeamGoals: number,
 }
+
+export interface IMatchDb extends IMatch {
+  id: number,
+  inProgress: boolean,
+}

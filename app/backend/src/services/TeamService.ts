@@ -1,27 +1,24 @@
 import { Request } from 'express';
-import NotFoundError from '../errors/NotFoundError';
-import Team from '../database/models/Team';
-import { ITeamService } from '../interfaces/team_interfaces/ITeamService';
-import { ITeam } from '../interfaces/team_interfaces/ITeam';
 import validateRequest from './utils/validateRequest';
-import ValidationError from '../errors/ValidationError';
+import { NotFoundError, ValidationError } from '../errors';
+import { ITeam, ITeamRepository, ITeamService } from '../interfaces/team_interfaces';
 
 class TeamService implements ITeamService {
-  private model = Team;
+  constructor(private teamRepository: ITeamRepository) {}
 
-  getAll = async (): Promise<ITeam[]> => {
-    const teams = await this.model.findAll({ raw: true });
+  getAllTeams = async (): Promise<ITeam[]> => {
+    const teams = await this.teamRepository.findAll();
     return teams;
   };
 
-  getById = async (id: number): Promise<ITeam> => {
-    const team = await this.model.findByPk(id, { raw: true });
+  getTeamById = async (id: number): Promise<ITeam> => {
+    const team = await this.teamRepository.findById(id);
+    this.validateIfExists(team);
     return team as ITeam;
   };
 
-  validateIfExists = (team: ITeam): ITeam => {
+  private validateIfExists = (team: ITeam): void => {
     if (!team) throw new NotFoundError('team not found');
-    return team;
   };
 
   validateIdParam = (req: Request): number => {
