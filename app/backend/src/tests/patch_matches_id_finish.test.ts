@@ -4,8 +4,8 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
-import Match from '../database/models/Match';
 import { expect } from 'chai';
+import { matchRepository } from '../repositories';
 
 chai.use(chaiHttp);
 
@@ -18,7 +18,7 @@ describe('Testando o endpoint PATCH /matches/id:/finish', () => {
   let chaiHttpResponse: ResponseType;
   
   before(async () => {
-    sinon.stub(Match, 'update').resolves();
+    sinon.stub(matchRepository, 'update').resolves();
     chaiHttpResponse = await chai.request(app)
       .patch('/matches/1/finish')
   });
