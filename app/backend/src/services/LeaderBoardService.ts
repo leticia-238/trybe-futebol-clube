@@ -1,28 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { IMatchService } from '../interfaces/match_interfaces/IMatchService';
 import { TeamRankingsCallBack } from '../interfaces/ILeaderboardService';
-import TeamRanking from './utils/TeamRanking';
+import TeamRanking from '../entities/TeamRanking';
 
 class LeaderBoardService {
   constructor(private matchesService: IMatchService) {}
 
   getTeamRankings = async (teamsRankings: TeamRankingsCallBack) => {
     const matches = await this.matchesService.getAllWithTeamNames({ inProgress: false });
-
     const result = matches.reduce(teamsRankings, {} as Record<string, TeamRanking>);
-    return Object.values(result).sort((a, b) => {
-      if (a.totalPoints < b.totalPoints) return 1;
-      if (a.totalPoints > b.totalPoints) return -1;
-      if (a.totalVictories < b.totalVictories) return 1;
-      if (a.totalVictories > b.totalVictories) return -1;
-      if (a.goalsBalance < b.goalsBalance) return 1;
-      if (a.goalsBalance > b.goalsBalance) return -1;
-      if (a.goalsFavor < b.goalsFavor) return 1;
-      if (a.goalsFavor > b.goalsFavor) return -1;
-      if (a.goalsOwn < b.goalsOwn) return 1;
-      if (a.goalsOwn > b.goalsOwn) return -1;
-      return 0;
-    });
+    return this.sortTeamRankings(Object.values(result));
   };
 
   getAllTeamRankings: TeamRankingsCallBack = (obj, match) => {
@@ -62,6 +49,22 @@ class LeaderBoardService {
     teamRankingsList[teamId] = team;
     return team;
   };
+
+  private sortTeamRankings = (teamRankings: TeamRanking[]) => (
+    teamRankings.sort((a, b) => {
+      if (a.totalPoints < b.totalPoints) return 1;
+      if (a.totalPoints > b.totalPoints) return -1;
+      if (a.totalVictories < b.totalVictories) return 1;
+      if (a.totalVictories > b.totalVictories) return -1;
+      if (a.goalsBalance < b.goalsBalance) return 1;
+      if (a.goalsBalance > b.goalsBalance) return -1;
+      if (a.goalsFavor < b.goalsFavor) return 1;
+      if (a.goalsFavor > b.goalsFavor) return -1;
+      if (a.goalsOwn < b.goalsOwn) return 1;
+      if (a.goalsOwn > b.goalsOwn) return -1;
+      return 0;
+    })
+  );
 }
 
 export default LeaderBoardService;

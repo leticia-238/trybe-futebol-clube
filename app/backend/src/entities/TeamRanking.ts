@@ -1,4 +1,4 @@
-import { ITeamRanking } from '../../interfaces/ITeamRanking';
+import { ITeamRanking } from '../interfaces/ITeamRanking';
 
 class TeamRanking implements ITeamRanking {
   totalPoints = 0;

@@ -1,4 +1,4 @@
-import { IUserWithPassword } from '../../interfaces/user_interfaces/IUserWithPassword';
+import { IUserWithPassword } from '../../interfaces/user_interfaces/IUser';
 import { encryptPassword } from '../../services/utils/encrypt';
 import { validEmail, validPassword, validRole } from '../data/login';
 

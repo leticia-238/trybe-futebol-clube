@@ -1,4 +1,4 @@
-import { IMatchWithTeamNamesDb } from "../../interfaces/match_interfaces/IMatchWithTeamNamesDb";
+import { IMatchWithTeamNamesDb } from "../../interfaces/match_interfaces";
 import { createdMatch } from "../data/matches";
 
 export const allMatchesDb: IMatchWithTeamNamesDb[] = [

@@ -1,4 +1,4 @@
-import TeamRanking from '../services/utils/TeamRanking';
+import TeamRanking from '../entities/TeamRanking';
 import { IMatchWithTeamNames } from './match_interfaces/IMatchWithTeamNames';
 
 export type TeamRankingsCallBack = (
