@@ -11,7 +11,7 @@ class TeamController {
 
   getTeamById: RequestHandler = async (req, res): Promise<void> => {
     const id = this.service.validateIdParam(req);
-    const team = this.service.getTeamById(id);
+    const team = await this.service.getTeamById(id);
     res.status(200).json(team);
   };
 }
