@@ -338,7 +338,7 @@
     "method": "POST",
     "sortNum": 145000,
     "created": "2022-08-30T18:20:03.277Z",
-    "modified": "2022-08-30T18:20:03.277Z",
+    "modified": "2022-09-08T00:33:19.187Z",
     "headers": [
       {
         "name": "Authorization",
@@ -348,7 +348,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"homeTeam\": 16, \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
+      "raw": "{\n  \"homeTeam\": 98, \n  \"awayTeam\": 8, \n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
       "form": []
     },
     "auth": {
