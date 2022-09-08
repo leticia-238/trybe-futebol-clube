@@ -2,7 +2,6 @@ import * as sinon from "sinon";
 import * as chai from "chai";
 // @ts-ignore
 import chaiHttp = require("chai-http");
-import User from "../database/models/User";
 import { app } from "../app";
 import httpStatus from "../helpers/httpStatus";
 import {
@@ -14,8 +13,9 @@ import {
   validPassword,
 } from "./data/login";
 import { userDb, userToken } from "./mocks/user_mocks";
-import * as jwt from 'jsonwebtoken';
-import { SinonStub } from 'sinon';
+import { userRepository } from "../repositories";
+import { IUserWithPassword } from "../interfaces/user_interfaces";
+import { authService } from "../services";
 
 chai.use(chaiHttp);
 
@@ -29,14 +29,14 @@ type ResponseType = {
 const { expect } = chai;
 
 describe("Testando o endpoint POST /login", () => {
-  let chaiHttpResponse: ResponseType;
-  let chaiHttpResponses: ResponseType[];
 
   describe("requisição com email e senha válidos", () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
-      sinon.stub(User, "findOne").resolves(userDb as User);
-      const stub = sinon.stub(jwt, 'sign') as SinonStub
-      stub.returns(userToken)
+      sinon.stub(userRepository, 'findByEmail').resolves(userDb as IUserWithPassword);
+      sinon.stub(authService, 'generateToken').returns(userToken);
+
       chaiHttpResponse = await chai
         .request(app)
         .post("/login")
@@ -55,8 +55,12 @@ describe("Testando o endpoint POST /login", () => {
   });
 
   describe("requisição com email ou senha faltando", () => {
+    let chaiHttpResponses: ResponseType[];
+    
     before(async () => {
-      sinon.stub(User, "findOne").rejects();
+      sinon.stub(userRepository, 'findByEmail').rejects();
+      sinon.stub(authService, 'generateToken')
+      
       const requester = chai.request(app).keepOpen();
 
       chaiHttpResponses = await Promise.all([
@@ -87,8 +91,12 @@ describe("Testando o endpoint POST /login", () => {
   });
 
   describe("requisição com email ou senha inválidos", () => {
+    let chaiHttpResponses: ResponseType[];
+    
     before(async () => {
-      sinon.stub(User, "findOne").resolves();
+      sinon.stub(userRepository, 'findByEmail').resolves(undefined);
+      sinon.stub(authService, 'generateToken')
+      
       const requester = chai.request(app).keepOpen();
 
       chaiHttpResponses = await Promise.all([

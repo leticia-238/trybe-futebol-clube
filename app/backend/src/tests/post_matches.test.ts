@@ -4,15 +4,15 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
-import Match from '../database/models/Match';
 import { createdMatchDb } from './mocks/matches_mocks';
-import { IMatch } from '../interfaces/match_interfaces/IMatch';
+import { IMatch, IMatchDb } from '../interfaces/match_interfaces/IMatch';
 import { 
   createdMatch, invalidMatch1, invalidMatch2, invalidMatch3, 
   matchWithEqualTeams, matchWithInexistentsTeams, validMatch 
 } from './data/matches';
-import { SinonStub } from 'sinon';
-import * as jwt from 'jsonwebtoken';
+import { matchRepository } from '../repositories';
+import { authService } from '../services';
+import { userDb } from './mocks/user_mocks';
 
 chai.use(chaiHttp);
 
@@ -24,14 +24,14 @@ type ResponseType = {
 const { expect } = chai;
 
 describe('Testando o endpoint POST /matches', () => {
-  let chaiHttpResponse: ResponseType;
-  let chaiHttpResponses: ResponseType[];
   
   describe('requisição com partida válida', () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
-      sinon.stub(Match, 'create').resolves(createdMatchDb as Match);
-      const stub = sinon.stub(jwt, 'verify') as SinonStub
-      stub.returns({})
+      sinon.stub(matchRepository, 'create').resolves(createdMatchDb as IMatchDb);
+      sinon.stub(authService, 'verifyToken').returns(userDb);
+
       chaiHttpResponse = await chai.request(app)
         .post('/matches')
         .send(validMatch)
@@ -49,10 +49,12 @@ describe('Testando o endpoint POST /matches', () => {
   });
 
   describe('requisição com os dados da partida inválidos', () => {
+    let chaiHttpResponses: ResponseType[];
+    
     before(async () => {
-      sinon.stub(Match, 'create').rejects();
-      const stub = sinon.stub(jwt, 'verify') as SinonStub
-      stub.returns({})
+      sinon.stub(matchRepository, 'create').rejects();
+      sinon.stub(authService, 'verifyToken').returns(userDb);
+      
       const requester = chai.request(app).keepOpen()
       chaiHttpResponses = await Promise.all([
         requester.post('/matches').send(invalidMatch1),
@@ -79,10 +81,12 @@ describe('Testando o endpoint POST /matches', () => {
   });
   
   describe('requisição com times iguais na mesma partida', () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
-      sinon.stub(Match, 'create').rejects();
-      const stub = sinon.stub(jwt, 'verify') as SinonStub
-      stub.returns({})
+      sinon.stub(matchRepository, 'create').rejects();
+      sinon.stub(authService, 'verifyToken').returns(userDb);
+      
       chaiHttpResponse = await chai.request(app)
         .post('/matches')
         .send(matchWithEqualTeams)
@@ -101,10 +105,12 @@ describe('Testando o endpoint POST /matches', () => {
   });
 
   describe('requisição com partida com times que não existem', () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
-      sinon.stub(Match, 'create').rejects();
-      const stub = sinon.stub(jwt, 'verify') as SinonStub
-      stub.returns({})
+      sinon.stub(matchRepository, 'create').rejects();
+      sinon.stub(authService, 'verifyToken').returns(userDb);
+      
       chaiHttpResponse = await chai.request(app)
       .post('/matches')
       .send(matchWithInexistentsTeams)

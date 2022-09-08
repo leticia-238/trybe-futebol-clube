@@ -2,11 +2,12 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-import User from '../database/models/User';
 import { app } from '../app';
 import httpStatus from '../helpers/httpStatus';
 import { userDb } from './mocks/user_mocks';
 import { invalidToken, validEmail, validPassword } from './data/login';
+import { userRepository } from '../repositories';
+import { IUserWithPassword } from '../interfaces/user_interfaces';
 
 chai.use(chaiHttp);
 
@@ -18,11 +19,11 @@ type ResponseType = {
 const { expect } = chai;
 
 describe('Testando o endpoint GET /login/validate', () => {
-  let chaiHttpResponse: ResponseType;
   
   describe('requisição com token válido', () => {
+    let chaiHttpResponse: ResponseType;
     before(async () => {
-      sinon.stub(User, 'findOne').resolves(userDb as User);
+      sinon.stub(userRepository, 'findByEmail').resolves(userDb as IUserWithPassword);
       chaiHttpResponse = await chai
         .request(app)
         .post('/login')
@@ -43,11 +44,13 @@ describe('Testando o endpoint GET /login/validate', () => {
     });
 
     it("deve retornar um objeto com a 'role' do user", async () => {
-      expect(chaiHttpResponse.body).to.deep.equal({ role: 'admin' });
+      expect(chaiHttpResponse.body).to.deep.equal({ role: userDb.role });
     });
   });
 
   describe('requisição com token inválido', () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
       chaiHttpResponse = await chai
         .request(app)
@@ -68,6 +71,8 @@ describe('Testando o endpoint GET /login/validate', () => {
   });
 
   describe('requisição sem o token de autenticação', () => {
+    let chaiHttpResponse: ResponseType;
+    
     before(async () => {
       chaiHttpResponse = await chai.request(app).get('/login/validate');
     });
