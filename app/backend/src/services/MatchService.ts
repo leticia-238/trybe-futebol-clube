@@ -27,7 +27,7 @@ class MatchService implements IMatchService {
   };
 
   saveMatch = async (match: IMatch): Promise<IMatchDb> => {
-    this.validateIfTeamsExists(match.homeTeam, match.awayTeam);
+    await this.validateIfTeamsExists(match.homeTeam, match.awayTeam);
     const createdMatch = await this.matchRepository.create(match);
     return createdMatch;
   };
