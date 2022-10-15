@@ -8,6 +8,8 @@
 
 ## Sobre o projeto
 
+***Projeto realizado durante módulo de Backend na Trybe, entre 17 de Agosto e 7 de Setembro de 2022.***
+
 O Trybe Futebol Clube é um site informativo sobre partidas e classificações de futebol. 
 
 Este projeto é composto por uma aplicação front-end e uma aplicação back-end integradas. O front-end consiste em uma aplicação React com uma tela de login para o usuário e uma tabela que exibe as informações disponibilizadas pela API desenvolvida no back-end. 
